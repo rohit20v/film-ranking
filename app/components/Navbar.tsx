@@ -4,15 +4,20 @@ function Navbar() {
     return (
         <>
             <nav>
-                <ul style={{display: "flex", justifyContent: "space-around"}}>
+                <ul>
+                    <li><strong>YES</strong></li>
+                </ul>
+                <ul>
                     <li>
-                        <NavLink className={"navLink"} to={"./"} >Home</NavLink>
+                        <NavLink className={"navLink"} to={"./"}>Home</NavLink>
                     </li>
                     <li>
                         <NavLink className={"navLink"} to={"./add-film"}>Add movies</NavLink>
                     </li>
+                    <li>
+                        <NavLink className={"navLink"} to={"./login"}>Login</NavLink>
+                    </li>
                 </ul>
-
             </nav>
         </>
     );

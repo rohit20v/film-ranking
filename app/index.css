@@ -1,27 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
+@import '@picocss/pico/css/pico.min.css';
 
-
-html {
-    margin: 0;
-    padding: 0;
-}
 
 *{
     font-family: "Syne", monospace;
     font-optical-sizing: auto;
     font-weight: 600;
     font-style: normal;
-}
-
-li {
-    list-style: none;
-}
-
-.navLink {
-    text-decoration: none;
-    transition: .2s ease-in-out;
-}
-
-.navLink:hover {
-    color: deepskyblue;
 }

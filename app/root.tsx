@@ -1,8 +1,5 @@
 import {Links, Meta, Outlet, Scripts, ScrollRestoration,} from "@remix-run/react";
-import {MantineProvider} from "@mantine/core";
-import "./tailwind.css";
 import "./index.css";
-import '@mantine/core/styles.css';
 import Navbar from "~/components/Navbar";
 
 export function Layout({children}: { children: React.ReactNode }) {
@@ -15,10 +12,8 @@ export function Layout({children}: { children: React.ReactNode }) {
             <Links/>
         </head>
         <body>
-        <Navbar />
-        <MantineProvider defaultColorScheme={"dark"}>
-            {children}
-        </MantineProvider>
+        <Navbar/>
+        {children}
         <ScrollRestoration/>
         <Scripts/>
         </body>
@@ -27,5 +22,9 @@ export function Layout({children}: { children: React.ReactNode }) {
 }
 
 export default function App() {
-    return <Outlet/>;
+    return (
+        <div className={"container"}>
+
+            <Outlet/>
+        </div>)
 }
