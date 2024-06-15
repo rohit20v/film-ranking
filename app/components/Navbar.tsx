@@ -1,4 +1,5 @@
 import {NavLink} from "@remix-run/react";
+import ThemeToggler from "~/components/ThemeToggler";
 
 function Navbar() {
     return (
@@ -15,6 +16,9 @@ function Navbar() {
                     </li>
                     <li>
                         <NavLink className={"navLink"} to={"./add-film"}>Add movies</NavLink>
+                    </li>
+                    <li>
+                        <ThemeToggler/>
                     </li>
                 </ul>
             </nav>
