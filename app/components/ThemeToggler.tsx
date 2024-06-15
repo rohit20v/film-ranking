@@ -8,6 +8,9 @@ const ThemeToggler = () => {
         const newTheme = currentTheme === "pumpkin" ? "blue" : "pumpkin";
         setCurrentTheme(newTheme);
 
+        const root = document.documentElement;
+        root.style.setProperty("--underline-color", `var(--theme-color-${newTheme})`);
+
         const links = document.querySelectorAll("link[rel=stylesheet]") as NodeListOf<HTMLLinkElement>;
         links.forEach((link) => {
             if (link.href.includes("pico.pumpkin.min.css")) {

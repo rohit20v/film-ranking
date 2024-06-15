@@ -28,7 +28,7 @@ export function Layout({children}: { children: React.ReactNode }) {
 
 export default function App() {
     return (
-        <div className={"container"}>
+        <div className={"container-fluid overflow-auto"}>
 
             <Outlet/>
         </div>)

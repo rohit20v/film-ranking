@@ -1,10 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
 /*@import '../../node_modules/@picocss/pico/css/pico.pumpkin.min.css';*/
+:root {
+    overflow-x: hidden;
+    --theme-color-pumpkin: #ff7518;
+    --theme-color-blue: #007acc;
+    --underline-color: var(--theme-color-pumpkin);
+}
 
-
-*{
+* {
     font-family: "Syne", monospace;
     font-optical-sizing: auto;
     font-weight: 600;
     font-style: normal;
+}
+
+.center {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+}
+
+.title {
+    font-size: xx-large;
+    position: relative;
+}
+
+.title::before {
+    position: absolute;
+    content: "";
+    background: var(--underline-color);
+    height: 3px;
+    width: 0;
+    bottom: 0;
+    border-radius: 100%;
+    transition: .2s ease-in-out;
+}
+
+.title:hover::before {
+    width: 100%;
 }
