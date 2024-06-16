@@ -1,6 +1,7 @@
 import {prisma} from "~/utils/db.server";
 import {json, LoaderFunctionArgs} from "@remix-run/node";
 import {useLoaderData} from "@remix-run/react";
+import {MOVIE} from "~/types/movie-table";
 
 
 export const loader = async ({params}: LoaderFunctionArgs) => {
@@ -15,13 +16,13 @@ export const loader = async ({params}: LoaderFunctionArgs) => {
 }
 
 function Films() {
-    const {movies} = useLoaderData<{ movies }>();
+    const {movies} = useLoaderData<{ movies:MOVIE[] }>();
     return (
         <div className="text-center">
             {movies ?
                 <ul>
                     {movies?.map((movie) => (
-                        <li>{movie?.name}</li>
+                        <li key={movie?.id}><strong className={"movieName"}>{movie?.name}:</strong> <span style={{fontWeight: 400}}>{movie?.description}</span> </li>
                     ))}
                 </ul>
                 :

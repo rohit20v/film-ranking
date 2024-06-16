@@ -39,3 +39,13 @@
 .title:hover::before {
     width: 100%;
 }
+
+.movieName{
+    color: var(--underline-color);
+    filter: brightness(100%);
+    transition: .2s ease-in-out;
+}
+
+.movieName:hover{
+    filter: brightness(200%);
+}
