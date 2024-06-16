@@ -5,7 +5,7 @@ function Navbar() {
     return (
         <nav>
             <ul>
-                <li><a href="./" style={{textDecoration: "none"}}><strong>YES</strong></a></li>
+                <li><a href="./" style={{marginLeft:"8px", textDecoration: "none"}}><strong>YES</strong></a></li>
             </ul>
             <ul>
                 <li>

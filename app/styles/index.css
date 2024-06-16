@@ -49,3 +49,8 @@
 .movieName:hover{
     filter: brightness(200%);
 }
+
+.navLink{
+    text-decoration: none;
+    padding-inline: 8px
+}
