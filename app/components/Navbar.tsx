@@ -27,6 +27,9 @@ function Navbar() {
                     <NavLink className={"navLink"} to={"./sign_in"}>Sign In</NavLink>
                 </li>
                 <li>
+                    <NavLink className={"navLink"} to={"./login"}>Login</NavLink>
+                </li>
+                <li>
                     <ThemeToggler/>
                 </li>
                 <li>
