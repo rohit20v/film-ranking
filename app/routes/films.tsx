@@ -26,13 +26,13 @@ function Films() {
 
                 <strong className={"movieName"}>{movie?.name}:</strong>
                 </header>
-                <span style={{ fontWeight: 400 }}>{movie?.description}</span>
+                {/*<span style={{ fontWeight: 400 }}>{movie}</span>*/}
                 
               </article>
           ))}
           </>
       ) : (
-        <button>No movie found</button>
+        <p>No movie found</p>
       )}
     </div>
   );

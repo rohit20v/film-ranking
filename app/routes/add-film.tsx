@@ -1,17 +1,15 @@
 import {ActionFunctionArgs, json, redirect} from '@remix-run/node';
-import React from 'react';
 import {Form} from "@remix-run/react";
 import {prisma} from "~/utils/db.server";
+import {MOVIE} from "~/types/movie-table";
 
 export const action = async ({request}: ActionFunctionArgs) => {
     const formData = await request.formData()
     const title = formData.get("title") as string
-    const desc = formData.get("desc") as string
     try {
         const movie = await prisma.movie.create({
             data: {
                 name: title,
-                description: desc,
             }
         })
         console.log("done")
@@ -26,7 +24,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
 function AddFilm() {
     return (
         <div>
-            <Form id={"login"} method="post">
+            <Form method="post">
                 <label htmlFor="title">Movie Title</label>
                 <input type="text" name="title" id="title" placeholder={"Inception"} required/>
                 <label htmlFor="desc">Movie desc</label>
