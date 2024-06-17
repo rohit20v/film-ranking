@@ -15,7 +15,7 @@ model user_movie {
   created_at DateTime
 }
 
-model users {
+model user {
   id       Int    @id @default(autoincrement())
   username String @unique
   password String

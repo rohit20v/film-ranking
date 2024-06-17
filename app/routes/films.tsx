@@ -32,8 +32,6 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
 }
 
-
-
 function Films() {
     const {movies} = useLoaderData<{ movies: MOVIE[] }>();
     return (
