@@ -24,7 +24,7 @@ function Navbar() {
                     <NavLink className={"navLink"} to={"./films"}>Movies</NavLink>
                 </li>
                 <li>
-                    <NavLink className={"navLink"} to={"./add-film"}>Add movies</NavLink>
+                    <NavLink className={"navLink"} to={"./login"}>Login</NavLink>
                 </li>
                 <li>
                     <ThemeToggler/>

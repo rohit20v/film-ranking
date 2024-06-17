@@ -6,7 +6,7 @@ import AddFilm from "~/components/add-film";
 
 export const loader = async ({params}: LoaderFunctionArgs) => {
     try {
-        const movies = await prisma.movie.findMany();
+        const movies = await prisma.user_movie.findMany();
         console.log("DB has:", movies.length, "movies");
         return json({movies});
     } catch (err) {
@@ -19,7 +19,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
     const formData = await request.formData()
     const title = formData.get("title") as string
     try {
-        const movie = await prisma.movie.create({
+        const movie = await prisma.user_movie.create({
             data: {
                 name: title,
             }
@@ -39,7 +39,7 @@ function Films() {
     return (
         <div className="">
             <AddFilm/>
-            {movies ? (
+            {movies.length > 0 ? (
                 <>
                     {movies?.map((movie) => (
                         <article title={movie?.name} key={movie?.id}>
