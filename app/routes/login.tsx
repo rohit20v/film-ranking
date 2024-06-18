@@ -1,4 +1,4 @@
-import {Form, redirect,} from "@remix-run/react";
+import {Form, redirect, useActionData,} from "@remix-run/react";
 import {ActionFunctionArgs, json} from "@remix-run/node";
 import {prisma} from "~/utils/db.server";
 import {comparePassword} from "~/.server/auth";
@@ -21,11 +21,13 @@ export const action = async ({request}: ActionFunctionArgs) => {
         console.log("LOGGED IN", username)
         return redirect("/")
     }
-    return json({err: "Error while logging in"});
+    return json({err: "Invalid credentials"});
 
 }
 
-function Sign_in() {
+function Log_in() {
+    const actionData = useActionData<typeof action>()
+
     return (
         <>
             <h1>Login</h1>
@@ -36,10 +38,13 @@ function Sign_in() {
                     <label htmlFor={"pass"}>Enter a password</label>
                     <input type="password" id={"pass"} name={"pass"} placeholder={"***********"} required/>
                     <button type="submit">Login</button>
+                    <div className="status">
+                        {actionData && <p>{actionData.err}</p>}
+                    </div>
                 </Form>
             </div>
         </>
     );
 }
 
-export default Sign_in;
+export default Log_in;

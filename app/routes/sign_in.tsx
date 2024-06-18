@@ -1,4 +1,4 @@
-import {Form, redirect} from "@remix-run/react";
+import {Form, redirect, useActionData} from "@remix-run/react";
 import {ActionFunctionArgs, json} from "@remix-run/node";
 import {prisma} from "~/utils/db.server";
 import {Prisma} from "@prisma/client";
@@ -34,6 +34,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
 }
 
 function Sign_in() {
+    const actionData = useActionData<typeof  action>()
     return (
         <>
             <h1>Sign In</h1>
@@ -44,6 +45,9 @@ function Sign_in() {
                     <label htmlFor={"pass"}>Enter a password</label>
                     <input type="password" id={"pass"} name={"pass"} placeholder={"***********"} required/>
                     <button type="submit">Login</button>
+                    <div className="status">
+                        {actionData && <p >{actionData.err}</p>}
+                    </div>
                 </Form>
             </div>
         </>

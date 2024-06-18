@@ -73,3 +73,16 @@
     -webkit-backdrop-filter: blur(6.4px);
     border: 1px solid var(--underline-color);
 }
+
+.status{
+    background-color: var(--underline-color);
+    color: black;
+    border-radius: 8px;
+
+}
+
+.status > p {
+    padding: 16px;
+    color: white;
+    text-align: center;
+}

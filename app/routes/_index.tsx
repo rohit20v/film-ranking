@@ -1,7 +1,7 @@
 export default function Index() {
     return (
         <div className={"center"}>
-            <text className={"title"}>CINEPHILIA!!</text>
+            <span className={"title"}>CINEPHILIA!!</span>
         </div>
     );
 }
