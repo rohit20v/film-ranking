@@ -4,6 +4,8 @@ import {redirect, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
 import {getSession} from "~/session";
 import {User_movie} from "@prisma/client";
+import Star from "~/components/Star";
+import {useState} from "react";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"))
@@ -70,17 +72,27 @@ export const action = async ({request}: ActionFunctionArgs) => {
 function Films() {
     const data = useLoaderData<{ user_movies: User_movie[] }>() || {};
     const user_movies = data?.user_movies
+    const [color, setColor] = useState(new Array(5).fill("rgba(0,0,0,0)"));
 
+    const handleClick = (index: number) => {
+        setColor(color.map((_, i) => i <= index ? "yellow" : "rgba(0,0,0,0)"));
+    };
+
+
+    //TODO STAR LOGIC FOR RATING
     return (
         <div className="">
             <AddFilm/>
-
             {user_movies?.length > 0 ? (
                 <>
                     {user_movies?.map((movie) => (
                         <article title={movie?.name} key={movie?.id}>
                             <header>
                                 <strong className={"movieName"}>{movie?.name}</strong>
+                                {[...Array(5)].map((_, i) => (
+                                    <Star key={i} fill={color[i]} onClick={() => handleClick(i)}/>
+                                ))
+                                }
                             </header>
                             {/*<span style={{ fontWeight: 400 }}>{movie}</span>*/}
 
