@@ -1,4 +1,4 @@
-const Star = ({fill, onClick}: { fill: string }) => (
+const Star = ({fill, onClick}: { fill: string, onClick: () => void }) => (
     <svg
         height="54px"
         width="54px"
