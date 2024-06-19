@@ -44,10 +44,11 @@ export const action = async ({request}: ActionFunctionArgs) => {
             select: {id: true}
         })
 
-        if (!userId){
+        console.log(userId)
+
+        if (!userId) {
             return json({err: "Error adding movie"})
         }
-
         const movie = await prisma.user_movie.create({
             data: {
                 user_id: userId.id,
@@ -67,12 +68,13 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
 
 function Films() {
-    const {user_movies}= useLoaderData<{ user_movies: User_movie[] }>();
+    const data = useLoaderData<{ user_movies: User_movie[] }>() || {};
+    const user_movies = data?.user_movies
 
     return (
         <div className="">
             <AddFilm/>
-            {!user_movies ? (<p>You must be logged in to acces this page</p>) : null}
+
             {user_movies?.length > 0 ? (
                 <>
                     {user_movies?.map((movie) => (

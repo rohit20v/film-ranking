@@ -24,8 +24,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         });
         console.log("USER CREATED", createdUser.username);
 
-        let session = await getSession();
-        session.set("user", username);
+        const session = await getSession();
+        session.set("user", username_lower);
 
         return redirect("/", {
             headers: {

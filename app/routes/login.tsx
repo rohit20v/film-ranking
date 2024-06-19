@@ -19,10 +19,10 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
     const canLogin: boolean = await comparePassword(password, user.password);
     if (canLogin) {
-        console.log("LOGGED IN", username);
+        console.log("LOGGED IN", username_lower);
 
-        let session = await getSession();
-        session.set("user", username);
+        const session = await getSession();
+        session.set("user", username_lower);
 
         return redirect("/", {
             headers: {
