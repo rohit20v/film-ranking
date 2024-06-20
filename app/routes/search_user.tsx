@@ -1,5 +1,5 @@
 import {ActionFunctionArgs, json} from "@remix-run/node";
-import {Form, redirect, useActionData} from "@remix-run/react";
+import {Form, redirect} from "@remix-run/react";
 import {prisma} from "~/utils/db.server";
 
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -20,7 +20,6 @@ export const action = async ({request}: ActionFunctionArgs) => {
 }
 
 const Search_user = () => {
-    const userSearcher = useActionData();
     return (
         <>
             <Form method={"POST"}>
