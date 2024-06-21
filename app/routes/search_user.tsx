@@ -1,8 +1,7 @@
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
-import {Form, redirect, useLoaderData} from "@remix-run/react";
+import {Form, Link, redirect, useLoaderData} from "@remix-run/react";
 import {prisma} from "~/utils/db.server";
 import {getSession} from "~/session";
-import {User_friends} from "@prisma/client";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"))
@@ -11,11 +10,17 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
         return redirect("/login");
     }
 
-    const friends = await prisma.user.findFirst({
-        select: {user_friends: true},
-        where: {username: username}
-    });
-    return friends
+    try {
+        const friends = await prisma.user_friends.findMany({
+            include: {
+                friend: {select: {username: true}},
+            },
+            where: {user: {username: username}}
+        })
+        return json({err: null, friends})
+    } catch (e) {
+        return json({err: "Can't find user", friends: null})
+    }
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -26,7 +31,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
 
     const formData = await request.formData();
-    const formUsername: string = formData.get("username");
+    const formUsername: string = formData.get("username") as string;
     if (!formUsername) {
         return json({err: "Error no username to search"});
     }
@@ -42,18 +47,23 @@ export const action = async ({request}: ActionFunctionArgs) => {
 }
 
 const Search_user = () => {
-    const data = useLoaderData<User_friends[]>()
-    const friends = data?.user_friends;
-    console.log(friends)
+    const data = useLoaderData<typeof loader>()
+    const friends = data?.friends ?? [];
+
     return (
         <>
             <Form method={"POST"}>
                 <input type={"text"} name={"username"} placeholder={"Search your friends!"}/>
                 <button type={"submit"}>Search user</button>
             </Form>
-            {friends?.map((x) => (
-                <p key={x}>x</p>
-            ))}
+            <h4>Friends list:</h4>
+            <ul>
+                {friends?.map((x) => (
+                    <li key={x?.friend?.username}>
+                        <Link to={"/user/" + x?.friend.username}>{x?.friend?.username}</Link>
+                    </li>
+                ))}
+            </ul>
         </>
     )
 }

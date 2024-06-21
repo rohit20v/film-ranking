@@ -14,7 +14,10 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
         showAddFriendButton = false
     }
 
-    const userMovies = await prisma.user.findFirst({where: {username: username}, select: {user_movies: true}});
+    const userMovies = await prisma.user.findFirst({
+        where: {username: username},
+        select: {user_movies: true}
+    });
     if (userMovies === null) {
         return json({error: "User not found"});
     }

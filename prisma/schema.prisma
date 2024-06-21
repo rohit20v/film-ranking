@@ -22,13 +22,15 @@ model User {
   username     String         @unique
   password     String
   user_movies  User_movie[]
-  user_friends User_friends[]
+  user_friends User_friends[] @relation("user_id")
+  friends_user User_friends[] @relation("friend_id")
 }
 
 model User_friends {
   id        Int  @id @default(autoincrement())
-  user      User @relation(fields: [user_id], references: [id])
+  user      User @relation(name: "user_id", fields: [user_id], references: [id])
   user_id   Int
+  friend    User @relation(name: "friend_id", fields: [friend_id], references: [id])
   friend_id Int
 
   @@unique([user_id, friend_id])
