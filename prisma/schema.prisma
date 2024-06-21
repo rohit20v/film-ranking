@@ -22,8 +22,8 @@ model User {
   username     String         @unique
   password     String
   user_movies  User_movie[]
-  user_friends User_friends[] @relation("user_id")
-  friends_user User_friends[] @relation("friend_id")
+  user_friends User_friends[] @relation("user_id") // Friends added by the user
+  friends_user User_friends[] @relation("friend_id") // Users that added as friend this user
 }
 
 model User_friends {

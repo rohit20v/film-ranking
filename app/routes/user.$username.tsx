@@ -1,27 +1,37 @@
 import {Form, redirect, useLoaderData} from "@remix-run/react";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {prisma} from "~/utils/db.server";
-import {User_movie} from "@prisma/client";
 import {getSession} from "~/session";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"))
     const sessionUser = session.data.user;
     let showAddFriendButton = true;
-    //TODO: check if the user is already friend
+    //TODO: remove fried
     const username = params.username;
-    if (!sessionUser || username === sessionUser) {
+    if (!sessionUser || username === sessionUser/*searched user is the same logged in*/) {
         showAddFriendButton = false
     }
-
+    const userFriends = await prisma.user.findFirst({
+        where: {
+            username: sessionUser
+        },
+        select: {
+            user_friends: {include: {friend: {select: {username: true}}}}
+        }
+    })
+    const sessionUserFriends = userFriends?.user_friends.map((x)=>x.friend.username)
+    if (sessionUserFriends?.includes(username)){
+        showAddFriendButton = false
+    }
     const userMovies = await prisma.user.findFirst({
         where: {username: username},
         select: {user_movies: true}
     });
     if (userMovies === null) {
-        return json({error: "User not found"});
+        return json({err: "User not found", username: null, userMovies: null, showAddFriendButton: null});
     }
-    return {username, userMovies, showAddFriendButton}
+    return json({err: null, username, userMovies, showAddFriendButton})
 }
 
 export const action = async ({request, params}: ActionFunctionArgs) => {
@@ -33,7 +43,7 @@ export const action = async ({request, params}: ActionFunctionArgs) => {
     const friendToAdd = params.username
     const friendToAddId = await prisma.user.findFirst({where: {username: friendToAdd}, select: {id: true}});
     if (!friendToAddId?.id) {
-        return json({error: "User not found"});
+        return json({err: "User not found"});
     }
     try {
         const added = await prisma.user.update({
@@ -45,20 +55,17 @@ export const action = async ({request, params}: ActionFunctionArgs) => {
             }
         })
     } catch (e) {
-        return json({error: "Error adding friend"});
+        return json({err: "Error adding friend"});
     }
-    return {added: true}
+    return json({err: null})
 }
 
 const userFilms = () => {
-    const data = useLoaderData<{
-        username: string,
-        userMovies: { user_movies: User_movie[] },
-        showAddFriendButton: boolean
-    }>();
-    const username = data?.username;
-    const {user_movies: userMovies} = data.userMovies || {};
-    const showAddFriendButton = data?.showAddFriendButton;
+    const data = useLoaderData<typeof loader>();
+
+    const username = data?.username ?? "";
+    const userMovies = data?.userMovies?.user_movies || [];
+    const showAddFriendButton = data?.showAddFriendButton || false;
 
     return (
         <>
