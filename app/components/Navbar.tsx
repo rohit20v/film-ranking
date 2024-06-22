@@ -15,6 +15,9 @@ function Navbar() {
                     <NavLink className={"navLink"} to={"./films"}>Movies</NavLink>
                 </li>
                 <li>
+                    <NavLink className={"navLink"} to={"./search_user"}>Search user</NavLink>
+                </li>
+                <li>
                     <NavLink className={"navLink"} to={"./sign_in"}>Sign In</NavLink>
                 </li>
                 <li>
