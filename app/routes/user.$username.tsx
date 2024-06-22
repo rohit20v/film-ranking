@@ -2,6 +2,7 @@ import {Form, redirect, useLoaderData} from "@remix-run/react";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {prisma} from "~/utils/db.server";
 import {getSession} from "~/session";
+import {OnlyStar} from "~/components/Star";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"))
@@ -17,11 +18,11 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
             username: sessionUser
         },
         select: {
-            user_friends: {include: {friend: {select: {username: true}}}}
+            following: {include: {friend: {select: {username: true}}}}
         }
     })
-    const sessionUserFriends = userFriends?.user_friends.map((x)=>x.friend.username)
-    if (sessionUserFriends?.includes(username)){
+    const sessionUserFriends = userFriends?.following.map((x) => x.friend.username)
+    if (sessionUserFriends?.includes(username)) {
         showAddFriendButton = false
     }
     const userMovies = await prisma.user.findFirst({
@@ -51,7 +52,7 @@ export const action = async ({request, params}: ActionFunctionArgs) => {
                 username: user,
             },
             data: {
-                user_friends: {create: {friend_id: friendToAddId.id}}
+                following: {create: {friend_id: friendToAddId.id}}
             }
         })
     } catch (e) {
@@ -73,7 +74,24 @@ const userFilms = () => {
                 (<p>user not found</p>) :
                 (
                     <>
-                        <h1> {username}</h1>
+                        <span style={{fontWeight: "bold", fontSize: 42}}> {username}</span>
+
+                        {
+                            userMovies?.length > 0 ? (
+                                <>
+                                    {userMovies?.map((movie) => (
+                                        <article title={movie?.name} key={movie?.id}>
+                                            <header>
+                                                <strong className={"movieName"}>{movie?.name}</strong>
+                                            </header>
+                                            <OnlyStar star={parseInt(movie?.rating)}/>
+                                        </article>
+                                    ))}
+                                </>
+                            ) : (
+                                <p>No movie found</p>
+                            )
+                        }
                         {showAddFriendButton &&
                             <Form method={"POST"}>
                                 <button type={"submit"}>Add friend</button>
@@ -82,21 +100,7 @@ const userFilms = () => {
                     </>
                 )
             }
-            {
-                userMovies?.length > 0 ? (
-                    <>
-                        {userMovies?.map((movie) => (
-                            <article title={movie?.name} key={movie?.id}>
-                                <header>
-                                    <strong className={"movieName"}>{movie?.name}</strong>
-                                </header>
-                            </article>
-                        ))}
-                    </>
-                ) : (
-                    <p>No movie found</p>
-                )
-            }
+
         </>
     )
 }

@@ -18,12 +18,12 @@ model User_movie {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  username     String         @unique
-  password     String
-  user_movies  User_movie[]
-  user_friends User_friends[] @relation("user_id") // Friends added by the user
-  friends_user User_friends[] @relation("friend_id") // Users that added as friend this user
+  id          Int            @id @default(autoincrement())
+  username    String         @unique
+  password    String
+  user_movies User_movie[]
+  following   User_friends[] @relation("user_id") // Friends added by the user
+  followers   User_friends[] @relation("friend_id") // Users that added as friend this user
 }
 
 model User_friends {

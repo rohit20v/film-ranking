@@ -1,8 +1,8 @@
 import {Form} from "@remix-run/react";
 import {useRef, useState} from "react";
 
-const Star = ({fill, onClick}: { fill: string, onClick?: () => void }) => (
-    <>
+const Star = ({fill, onClick, state}: { fill: string, onClick?:() => void, state: string }) => {
+    return <>
         <svg
             height="54px"
             width="54px"
@@ -10,7 +10,7 @@ const Star = ({fill, onClick}: { fill: string, onClick?: () => void }) => (
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             onClick={onClick}
-            style={{cursor: 'pointer'}}
+            style={{cursor : state}}
         >
             <path
                 fill={fill}
@@ -25,11 +25,27 @@ const Star = ({fill, onClick}: { fill: string, onClick?: () => void }) => (
             />
         </svg>
     </>
-);
+};
+
+
+export const OnlyStar = ({star, handleClick}: { star: number, handleClick?: (newRating: number) => Promise<void> }) => {
+    const stars = [];
+    for (let i = 0; i < 5; ++i) {
+        stars.push(
+            <Star
+                key={i}
+                fill={i < star ? 'yellow' : 'rgba(17,238,17,0)'}
+                onClick={() => handleClick?.(i + 1)}
+                state={handleClick? "pointer" : "default" }
+            />
+        );
+    }
+    return stars;
+}
+
 const Rating = ({movieId, rating}: { movieId: number, rating: number }) => {
     const [star, setStar] = useState(rating);
     const formRef = useRef(null);
-
     const handleClick = async (newRating: number) => {
         setStar(newRating);
 
@@ -48,16 +64,6 @@ const Rating = ({movieId, rating}: { movieId: number, rating: number }) => {
         }
     };
 
-    const stars = [];
-    for (let i = 0; i < 5; ++i) {
-        stars.push(
-            <Star
-                key={i}
-                fill={i < star ? 'yellow' : 'rgba(17,238,17,0)'}
-                onClick={() => handleClick(i + 1)}
-            />
-        );
-    }
 
     return (
         <div>
@@ -65,7 +71,7 @@ const Rating = ({movieId, rating}: { movieId: number, rating: number }) => {
                 <input type="hidden" name="formType" value="updateRating"/>
                 <input type="hidden" name="movieId" value={movieId}/>
                 <input type="hidden" name="newRating" value={star}/>
-                {stars}
+                <OnlyStar star={star} handleClick={handleClick}/>
             </Form>
         </div>
     );
