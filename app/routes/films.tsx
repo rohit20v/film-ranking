@@ -3,9 +3,8 @@ import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {redirect, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
 import {getSession} from "~/session";
-import {User_movie} from "@prisma/client";
-import Star from "~/components/Star";
-import {useState} from "react";
+import Rating from "~/components/Star";
+
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"))
@@ -22,82 +21,90 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
                 user_movies: true
             }
         });
-        //console.log("UserMovies ", movies);
-        return json(movies);
+        console.log("UserMovies ", movies);
+        return json({err: null, movies});
     } catch (err) {
         console.log("Error fetching data from DB");
-        return json({err: "Error fetching data from DB"});
+        return json({err: "Error fetching data from DB", movies: null});
     }
 };
 
+
 export const action = async ({request}: ActionFunctionArgs) => {
-    const session = await getSession(request.headers.get("cookie"))
+    const session = await getSession(request.headers.get('cookie'));
     const user = session.data.user;
-    if (!user) { //verify if the user is logged
-        return redirect("/login");
+    if (!user) {
+        // Verify if the user is logged in
+        return redirect('/login');
     }
 
-    const formData = await request.formData()
-    const title: string = formData.get("title") as string
+    const formData = await request.formData();
+    const formType = formData.get('formType');
 
-    try {
-        const userId = await prisma.user.findUnique({
-            where: {username: user},
-            select: {id: true}
-        })
+    if (formType === 'addFilm') {
+        const title: string = formData.get('title') as string;
+        try {
+            const userId = await prisma.user.findUnique({
+                where: {username: user},
+                select: {id: true},
+            });
 
-        console.log(userId)
-
-        if (!userId) {
-            return json({err: "Error adding movie"})
-        }
-        const movie = await prisma.user_movie.create({
-            data: {
-                user_id: userId.id,
-                name: title,
-                rating: 0,
-                created_at: new Date(),
-                tconst: "TODO"
+            if (!userId) {
+                return json({err: 'Error adding movie'});
             }
-        })
-        console.log("ADDED MOVIE", movie)
-        return json(movie)
-    } catch (er) {
-        console.log("not done")
-        return json({err: "Error adding movie"})
+            const movie = await prisma.user_movie.create({
+                data: {
+                    user_id: userId.id,
+                    name: title,
+                    rating: 0,
+                    created_at: new Date(),
+                    tconst: 'TODO',
+                },
+            });
+            return json(movie);
+        } catch (error) {
+            console.log('Error adding movie:', error);
+            return json({err: 'Error adding movie'});
+        }
+    } else if (formType === 'updateRating') {
+        const movieId = formData.get('movieId');
+        const newRating = formData.get('newRating');
+
+        try {
+            const updatedMovie = await prisma.user_movie.update({
+                where: {id: parseInt(movieId as string)},
+                data: {rating: parseInt(newRating as string)},
+            });
+            return json({updatedMovie});
+        } catch (error) {
+            console.log('Error updating rating:', error);
+            return json({err: 'Error updating rating'});
+        }
     }
-}
+};
 
 
 function Films() {
-    const data = useLoaderData<{ user_movies: User_movie[] }>() || {};
-    const user_movies = data?.user_movies
-    const [color, setColor] = useState(new Array(5).fill("rgba(0,0,0,0)"));
-
-    const handleClick = (index: number) => {
-        setColor(color.map((_, i) => i <= index ? "yellow" : "rgba(0,0,0,0)"));
-    };
+    const {err, movies} = useLoaderData<typeof loader>() || {};
+    const user_movies = movies?.user_movies ?? []
 
     //TODO STAR LOGIC FOR RATING
     return (
-        <div className="">
+        <div>
             <AddFilm/>
 
-            {user_movies?.length > 0 ? (
-                <>
-                    {user_movies?.map((movie) => (
-                        <article title={movie?.name} key={movie?.id}>
+            {user_movies.length > 0 ? (
+                user_movies
+                    .slice()
+                    .reverse()
+                    .map((movie, index) => (
+                        <article title={movie.name} key={movie.id}>
                             <header>
-                                <strong className={"movieName"}>{movie?.name}</strong>
-
+                                <strong className="movieName">{movie.name}</strong>
                             </header>
-                            {[...Array(5)].map((_, i) => (
-                                <Star key={i} fill={color[i]} onClick={() => handleClick(i)}/>
-                            ))}
-
+                            <Rating movieId={movie.id} rating={parseInt(movie.rating)} />
                         </article>
-                    ))}
-                </>
+                    ))
             ) : (
                 <p>No movie found</p>
             )}
