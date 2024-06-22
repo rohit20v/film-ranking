@@ -1,22 +1,13 @@
 import {NavLink} from "@remix-run/react";
 import ThemeToggler from "~/components/ThemeToggler";
-// import Lottie from 'lottie-react';
-// import hamburgerData from '../assets/hamburga.json'
 
 function Navbar() {
-    //
-    // const defaultOptions = {
-    //     animationData: hamburgerData,
-    //     rendererSettings: {
-    //         preserveAspectRatio: "xMidYMid slice"
-    //     }
-    // };
     return (
         <nav>
             <ul>
                 <li><a href="./" style={{marginLeft: "8px", textDecoration: "none"}}><strong>YES</strong></a></li>
             </ul>
-            <ul>
+            <ul className={"menu-list"}>
                 <li>
                     <NavLink className={"navLink"} to={"./"}>Home</NavLink>
                 </li>
