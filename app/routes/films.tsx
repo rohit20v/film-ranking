@@ -21,7 +21,6 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
                 user_movies: true
             }
         });
-        console.log("UserMovies ", movies);
         return json({err: null, movies});
     } catch (err) {
         console.log("Error fetching data from DB");
@@ -40,7 +39,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
     const formData = await request.formData();
     const formType = formData.get('formType');
-
+    console.log("formType", formType)
     if (formType === 'addFilm') {
         const title: string = formData.get('title') as string;
         try {
@@ -80,6 +79,18 @@ export const action = async ({request}: ActionFunctionArgs) => {
             console.log('Error updating rating:', error);
             return json({err: 'Error updating rating'});
         }
+    }else if(formType === 'searchFilm'){
+        const movieLet = formData.get('title')
+        // try {
+        //     const movies = await fetch(`http://173.212.203.208:5555/search/${movieLet}`)
+        //     console.log(movies)
+        //     return json( movies)
+        // }catch (e){
+        //     console.log(e)
+        // }
+        // return movieLet
+        console.log(movieLet)
+        return movieLet
     }
 };
 
@@ -88,7 +99,6 @@ function Films() {
     const {err, movies} = useLoaderData<typeof loader>() || {};
     const user_movies = movies?.user_movies ?? []
 
-    //TODO STAR LOGIC FOR RATING
     return (
         <div>
             <AddFilm/>

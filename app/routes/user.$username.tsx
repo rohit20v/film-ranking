@@ -75,7 +75,6 @@ const userFilms = () => {
                 (
                     <>
                         <span style={{fontWeight: "bold", fontSize: 42}}> {username}</span>
-
                         {
                             userMovies?.length > 0 ? (
                                 <>
