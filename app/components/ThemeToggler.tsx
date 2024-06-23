@@ -2,10 +2,10 @@ import {useState} from "react";
 import {IoInvertMode, IoInvertModeOutline} from "react-icons/io5";
 
 const ThemeToggler = () => {
-    const [currentTheme, setCurrentTheme] = useState("pumpkin");
+    const [currentTheme, setCurrentTheme] = useState("blue");
 
     const toggleTheme = () => {
-        const newTheme = currentTheme === "pumpkin" ? "blue" : "pumpkin";
+        const newTheme = currentTheme === "blue" ? "pumpkin" : "blue";
         setCurrentTheme(newTheme);
 
         const root = document.documentElement;

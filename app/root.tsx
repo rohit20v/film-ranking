@@ -4,7 +4,7 @@ import Navbar from "~/components/Navbar";
 
 
 export const links = () => [
-    { rel: "stylesheet", href: "../../node_modules/@picocss/pico/css/pico.pumpkin.min.css" }
+    { rel: "stylesheet", href: "../../node_modules/@picocss/pico/css/pico.blue.min.css" }
 ];
 export function Layout({children}: { children: React.ReactNode }) {
     return (

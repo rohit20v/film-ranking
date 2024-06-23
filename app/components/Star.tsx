@@ -1,4 +1,4 @@
-import {Form} from "@remix-run/react";
+import {Form, useFetcher} from "@remix-run/react";
 import {useRef, useState} from "react";
 
 const Star = ({fill, onClick, state}: { fill: string, onClick?:() => void, state: string }) => {
@@ -46,6 +46,7 @@ export const OnlyStar = ({star, handleClick}: { star: number, handleClick?: (new
 const Rating = ({movieId, rating}: { movieId: number, rating: number }) => {
     const [star, setStar] = useState(rating);
     const formRef = useRef(null);
+    const fetcher = useFetcher()
     const handleClick = async (newRating: number) => {
         setStar(newRating);
 
@@ -55,10 +56,8 @@ const Rating = ({movieId, rating}: { movieId: number, rating: number }) => {
         formData.append('newRating', newRating.toString());
 
         try {
-            await fetch('/films', {
-                method: 'POST',
-                body: formData,
-            });
+            fetcher.submit(formData, { method: "post", action: "/films" });
+
         } catch (error) {
             console.error('Error updating rating:', error);
         }
