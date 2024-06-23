@@ -1,6 +1,6 @@
 import {prisma} from "~/utils/db.server";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
-import {redirect, useLoaderData} from "@remix-run/react";
+import {Form, redirect, useFetcher, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
 import {getSession} from "~/session";
 import Rating from "~/components/Star";
@@ -76,21 +76,28 @@ export const action = async ({request}: ActionFunctionArgs) => {
             });
             return json({updatedMovie});
         } catch (error) {
-            console.log('Error updating rating:', error);
             return json({err: 'Error updating rating'});
         }
-    }else if(formType === 'searchFilm'){
+    } else if (formType === 'searchFilm') {
         const movieLet = formData.get('title')
-        // try {
-        //     const movies = await fetch(`http://173.212.203.208:5555/search/${movieLet}`)
-        //     console.log(movies)
-        //     return json( movies)
-        // }catch (e){
-        //     console.log(e)
-        // }
-        // return movieLet
-        console.log(movieLet)
+        try {
+            const movies = await fetch(`http://173.212.203.208:5555/search/${movieLet}`)
+            console.log(movies)
+            return json( movies)
+        }catch (e){
+            console.log(e)
+        }
         return movieLet
+    } else if (formType === 'removeMovie') {
+        const movieId = formData.get('movieId')
+        try {
+            const removeMovie = await prisma.user_movie.delete({
+                where: {id: parseInt(movieId as string)},
+            })
+            return json({removeMovie})
+        } catch (err) {
+            return json({err: 'Error removing movie'});
+        }
     }
 };
 
@@ -99,25 +106,56 @@ function Films() {
     const {err, movies} = useLoaderData<typeof loader>() || {};
     const user_movies = movies?.user_movies ?? []
 
+    const watchedMovies = user_movies.filter(movie => parseInt(movie.rating) > 0);
+    const not_watchedMovies = user_movies.filter(movie => parseInt(movie.rating) === 0);
+
+    const fetcher = useFetcher();
+    const removeMovie = async (movieId) => {
+        const formData = new FormData();
+        formData.append('formType', 'removeMovie');
+        formData.append('movieId', movieId);
+        fetcher.submit(formData, { method: "post", action: "/films" });
+    }
+
     return (
         <div>
             <AddFilm/>
+            <div className="grid">
+                <div>
+                    <h2>Watched Movies</h2>
+                    {watchedMovies.length > 0 ? (
+                        watchedMovies.reverse().map(movie => (
+                            <article title={movie.name} key={movie.id}>
+                                <header>
+                                    <strong className="movieName">{movie.name}</strong>
+                                </header>
+                                <Rating movieId={movie.id} rating={parseInt(movie.rating)}/>
+                            </article>
+                        ))
+                    ) : (
+                        <p>No movie found</p>
+                    )}
+                </div>
 
-            {user_movies.length > 0 ? (
-                user_movies
-                    .slice()
-                    .reverse()
-                    .map((movie, index) => (
-                        <article title={movie.name} key={movie.id}>
-                            <header>
-                                <strong className="movieName">{movie.name}</strong>
-                            </header>
-                            <Rating movieId={movie.id} rating={parseInt(movie.rating)} />
-                        </article>
-                    ))
-            ) : (
-                <p>No movie found</p>
-            )}
+                <div>
+                    <h2>Not-watched Movies</h2>
+                    {not_watchedMovies.length > 0 ? (
+                        not_watchedMovies.reverse().map(movie => (
+                            <article title={movie.name} key={movie.id}>
+                                <header>
+                                    <Form style={{display: "flex", justifyContent: "space-between"}}>
+                                        <strong className="movieName">{movie.name}</strong>
+                                        <p onClick={() => removeMovie(movie.id)} className={'remove'}>Remove</p>
+                                    </Form>
+                                </header>
+                                <Rating movieId={movie.id} rating={parseInt(movie.rating)}/>
+                            </article>
+                        ))
+                    ) : (
+                        <p>No movie found</p>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
