@@ -3,7 +3,7 @@ import {useFetcher} from "@remix-run/react";
 function AddFilm() {
     const search = useFetcher();
 
-    const addMovie = async (tconst) => {
+    const addMovie = async (tconst: string) => {
         if (!tconst) {
             return;
         }
@@ -11,7 +11,7 @@ function AddFilm() {
         formData.append("formType", "addFilm");
         formData.append("tconst", tconst);
         try {
-            search.submit(formData, {method:"POST"});
+            search.submit(formData, {method: "POST"});
         } catch (e) {
             console.log(e);
         }
@@ -55,13 +55,15 @@ function AddFilm() {
                 />
             </search.Form>
             <ul>
-
                 {search.data &&
-                    search.data?.searchedMovies?.map((movie) => {
-                        return (
-                            <li style={{cursor: "pointer"}} onClick={()=>addMovie(movie?.tconst)} key={movie?.tconst}>{movie?.primaryTitle}</li>
-                        );
-                    })
+                    search.data?.searchedMovies?.map((movie) => (
+                            <label
+                                style={{cursor: "pointer"}}
+                                onClick={() => addMovie(movie?.tconst)}
+                                key={movie?.tconst}
+                            >{movie?.primaryTitle}</label>
+                        )
+                    )
                 }
             </ul>
 
