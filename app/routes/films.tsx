@@ -4,6 +4,7 @@ import {redirect, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
 import {getSession} from "~/session";
 import Rating from "~/components/Star";
+import {addMoviesTitle} from "~/utils/functions";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"));
@@ -24,12 +25,9 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
                     user_movies: true,
                 },
             });
-            for (let i = 0; i < movies.user_movies.length; i++){
-                const res = await fetch("http://173.212.203.208:5555/tconst/" + movies.user_movies[i].tconst)
-                const movieData = await res.json()
-                movies.user_movies[i].name = movieData?.primaryTitle || "NULL";
-                console.log(movies.user_movies[i].name)
-            }
+            if (!movies) throw new Error("Error");
+
+            await addMoviesTitle(movies);
             return json({err: null, movies, searchedMovies: null});
         } catch (err) {
             console.log("Error fetching data from DB");

@@ -3,6 +3,7 @@ import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {prisma} from "~/utils/db.server";
 import {getSession} from "~/session";
 import {OnlyStar} from "~/components/Star";
+import {addMoviesTitle} from "~/utils/functions";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"))
@@ -32,6 +33,7 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
     if (userMovies === null) {
         return json({err: "User not found", username: null, userMovies: null, showAddFriendButton: null});
     }
+    await addMoviesTitle(userMovies)
     return json({err: null, username, userMovies, showAddFriendButton})
 }
 

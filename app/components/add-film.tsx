@@ -59,7 +59,7 @@ function AddFilm() {
                 {search.data &&
                     search.data?.searchedMovies?.map((movie) => {
                         return (
-                            <li onClick={()=>addMovie(movie?.tconst)} key={movie?.tconst}>{movie?.primaryTitle}</li>
+                            <li style={{cursor: "pointer"}} onClick={()=>addMovie(movie?.tconst)} key={movie?.tconst}>{movie?.primaryTitle}</li>
                         );
                     })
                 }
