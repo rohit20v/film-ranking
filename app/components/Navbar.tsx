@@ -5,7 +5,7 @@ function Navbar() {
     return (
         <nav>
             <ul>
-                <li><a href="./" style={{marginLeft: "8px", textDecoration: "none"}}><strong>YES</strong></a></li>
+                <li><a href="./" style={{marginLeft: "8px", textDecoration: "none"}}><strong className={'title'}>CINEPHILIA!</strong></a></li>
             </ul>
             <ul className={"menu-list"}>
                 <li>
