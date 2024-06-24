@@ -1,10 +1,10 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import {json, LoaderFunctionArgs} from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getSession } from "~/session";
 import { prisma } from "~/utils/db.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-    let session = await getSession(request.headers.get("cookie"));
+    const session = await getSession(request.headers.get("cookie"));
 
     if (session.data.user) {
         const canLogin = await prisma.user.findUnique({
@@ -15,22 +15,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
                 username: session.data.user,
             },
         });
-        return session.data;
+        if (canLogin){
+            return json({user: session.data, err: null});
+        }
     }
-
-    return null;
+    return json({user: null, err: "No session found"});
 };
 
 export default function Index() {
-    const user: { user: string } = useLoaderData();
-
+    const {user} = useLoaderData<typeof loader>();
     return (
         <>
             <div className={"center"}>
-                <span className={"title"}>CINEPHILIA!!</span>
-            </div>
-            <div>
-                {user ? <h3>Ben tornato: {user?.user}</h3> : <p>Non hai effettuato l'accesso</p>}
+                {user ? (<p>Ben tornato: {user?.user}</p>) : (<p>Non hai effettuato l'accesso</p>)}
             </div>
         </>
     );
