@@ -18,9 +18,6 @@ function AddFilm() {
     };
     const searchFilm = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event?.target?.value;
-        if (value === "") {
-            return;
-        }
         const formData = new FormData();
         formData.append("formType", "searchFilm");
         formData.append("title", value);
@@ -52,16 +49,17 @@ function AddFilm() {
                     id="title"
                     onChange={debouncedSearch}
                     placeholder={"Inception"}
+                    autoComplete={"off"}
                 />
             </search.Form>
             <ul>
                 {search.data &&
                     search.data?.searchedMovies?.map((movie) => (
-                            <label
+                            <li className={'suggestedMovies'}
                                 style={{cursor: "pointer"}}
                                 onClick={() => addMovie(movie?.tconst)}
                                 key={movie?.tconst}
-                            >{movie?.primaryTitle}</label>
+                            >{movie?.primaryTitle}</li>
                         )
                     )
                 }

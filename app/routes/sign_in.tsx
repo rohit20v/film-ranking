@@ -55,6 +55,7 @@ function Sign_in() {
                         id={"username"}
                         name={"username"}
                         placeholder={"your name"}
+                        autoComplete={"off"}
                         required
                     />
                     <label htmlFor={"pass"}>Enter a password</label>
@@ -62,6 +63,7 @@ function Sign_in() {
                         type="password"
                         id={"pass"}
                         name={"pass"}
+                        autoComplete={"off"}
                         placeholder={"***********"}
                         required
                     />
