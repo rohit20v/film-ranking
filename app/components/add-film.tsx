@@ -1,30 +1,70 @@
-import {Form} from "@remix-run/react";
+import {useFetcher} from "@remix-run/react";
 
 function AddFilm() {
+    const search = useFetcher();
 
-    const fetchFilms = async (event) => {
-        const value = event?.target?.value
-        const formData = new FormData();
-        formData.append('formType', 'searchFilm');
-        formData.append('title', value);
-        try{
-            await fetch('/films',{
-                method:'POST',
-                body: formData,
-            })
-        }catch (e){
-            console.log(e)
+    const addMovie = async (tconst) => {
+        if (!tconst) {
+            return;
         }
+        const formData = new FormData();
+        formData.append("formType", "addFilm");
+        formData.append("tconst", tconst);
+        try {
+            search.submit(formData, {method:"POST"});
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    const searchFilm = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event?.target?.value;
+        if (value === "") {
+            return;
+        }
+        const formData = new FormData();
+        formData.append("formType", "searchFilm");
+        formData.append("title", value);
+        try {
+            search.submit(formData);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    function debounce<T extends (...args: any[]) => any>(cb: T, wait: number = 400) {
+        let h: any;
+        const callable = (...args: any) => {
+            clearTimeout(h);
+            h = setTimeout(() => cb(...args), wait);
+        };
+        return callable;
     }
+
+    const debouncedSearch = debounce(searchFilm);
+
     return (
         <>
-            <Form method="post">
-                <fieldset role={"group"}>
-                    <input type="hidden" name="formType" value="addFilm"/>
-                    <input type="text" name="title" id="title" onChange={fetchFilms} placeholder={"Inception"} required/>
-                    <input type="submit" value={"Add it!"}/>
-                </fieldset>
-            </Form>
+            <h2>CIAO</h2>
+            <search.Form action={"/films"} method="GET">
+                <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    onChange={debouncedSearch}
+                    placeholder={"Inception"}
+                />
+            </search.Form>
+            <ul>
+
+                {search.data &&
+                    search.data?.searchedMovies?.map((movie) => {
+                        return (
+                            <li style={{cursor: "pointer"}} onClick={()=>addMovie(movie?.tconst)} key={movie?.tconst}>{movie?.primaryTitle}</li>
+                        );
+                    })
+                }
+            </ul>
+
         </>
     );
 }

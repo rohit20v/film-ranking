@@ -4,44 +4,68 @@ import {Form, redirect, useFetcher, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
 import {getSession} from "~/session";
 import Rating from "~/components/Star";
-
+import {addMoviesTitle} from "~/utils/functions";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get("cookie"))
+    const session = await getSession(request.headers.get("cookie"));
     const user = session.data.user;
-    if (!user) { //verify if the user is logged
+    if (!user) {
+        //verify if the user is logged
         return redirect("/login");
     }
-    try {
-        const movies = await prisma.user.findFirst({
-            where: {
-                username: user
-            },
-            select: {
-                user_movies: true
-            }
-        });
-        return json({err: null, movies});
-    } catch (err) {
-        console.log("Error fetching data from DB");
-        return json({err: "Error fetching data from DB", movies: null});
+    const q = new URL(request.url).searchParams.get("title")
+
+    if (!q) {
+        try {
+            const movies = await prisma.user.findFirst({
+                where: {
+                    username: user,
+                },
+                select: {
+                    user_movies: true,
+                },
+            });
+            if (!movies) throw new Error("Error");
+
+            await addMoviesTitle(movies);
+            return json({err: null, movies, searchedMovies: null});
+        } catch (err) {
+            console.log("Error fetching data from DB");
+            return json({err: "Error fetching data from DB", movies: null});
+        }
+    } else {
+        const movieLet = q
+        if (!movieLet || movieLet === "") {
+            return json({err: null, movies: null});
+        }
+        try {
+            console.log("Searching", movieLet);
+            const res = await fetch(
+                `http://173.212.203.208:5555/search/${movieLet}`,
+            );
+            const searchedMovies = await res.json();
+            return json({err: null, searchedMovies, movies: null});
+        } catch (e) {
+            return json({err: "Error while searching"});
+        }
     }
+
 };
 
-
 export const action = async ({request}: ActionFunctionArgs) => {
-    const session = await getSession(request.headers.get('cookie'));
+    const session = await getSession(request.headers.get("cookie"));
     const user = session.data.user;
     if (!user) {
         // Verify if the user is logged in
-        return redirect('/login');
+        return redirect("/login");
     }
 
     const formData = await request.formData();
-    const formType = formData.get('formType');
-    console.log("formType", formType)
-    if (formType === 'addFilm') {
-        const title: string = formData.get('title') as string;
+    const formType = formData.get("formType");
+
+    if (formType === "addFilm") {
+        const tconst: string = formData.get("tconst") as string;
+        console.log("ADDDING FILM tconst", tconst)
         try {
             const userId = await prisma.user.findUnique({
                 where: {username: user},
@@ -49,25 +73,24 @@ export const action = async ({request}: ActionFunctionArgs) => {
             });
 
             if (!userId) {
-                return json({err: 'Error adding movie'});
+                return json({err: "Error adding movie"});
             }
             const movie = await prisma.user_movie.create({
                 data: {
                     user_id: userId.id,
-                    name: title,
+                    tconst: tconst,
                     rating: 0,
-                    created_at: new Date(),
-                    tconst: 'TODO',
+                    created_at: new Date()
                 },
             });
             return json(movie);
         } catch (error) {
-            console.log('Error adding movie:', error);
-            return json({err: 'Error adding movie'});
+            console.log("Error adding movie:", error);
+            return json({err: "Error adding movie"});
         }
-    } else if (formType === 'updateRating') {
-        const movieId = formData.get('movieId');
-        const newRating = formData.get('newRating');
+    } else if (formType === "updateRating") {
+        const movieId = formData.get("movieId");
+        const newRating = formData.get("newRating");
 
         try {
             const updatedMovie = await prisma.user_movie.update({
@@ -76,18 +99,9 @@ export const action = async ({request}: ActionFunctionArgs) => {
             });
             return json({updatedMovie});
         } catch (error) {
-            return json({err: 'Error updating rating'});
+            console.log("Error updating rating:", error);
+            return json({err: "Error updating rating"});
         }
-    } else if (formType === 'searchFilm') {
-        const movieLet = formData.get('title')
-        try {
-            const movies = await fetch(`http://173.212.203.208:5555/search/${movieLet}`)
-            console.log(movies)
-            return json( movies)
-        }catch (e){
-            console.log(e)
-        }
-        return movieLet
     } else if (formType === 'removeMovie') {
         const movieId = formData.get('movieId')
         try {
@@ -101,10 +115,9 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
 };
 
-
 function Films() {
-    const {err, movies} = useLoaderData<typeof loader>() || {};
-    const user_movies = movies?.user_movies ?? []
+    const {movies} = useLoaderData<typeof loader>() || {};
+    const user_movies = movies?.user_movies ?? [];
 
     const watchedMovies = user_movies.filter(movie => parseInt(movie.rating) > 0);
     const not_watchedMovies = user_movies.filter(movie => parseInt(movie.rating) === 0);
@@ -136,7 +149,6 @@ function Films() {
                         <p>No movie found</p>
                     )}
                 </div>
-
                 <div>
                     <h2>Not-watched Movies</h2>
                     {not_watchedMovies.length > 0 ? (
