@@ -53,8 +53,10 @@ const Search_user = () => {
     return (
         <>
             <Form method={"POST"}>
-                <input type={"text"} name={"username"} placeholder={"Search your friends!"}/>
-                <button type={"submit"}>Search user</button>
+                <fieldset role={"group"}>
+                    <input type={"text"} name={"username"} placeholder={"Search your friends!"}/>
+                    <input type={"submit"} value={"Search user"} />
+                </fieldset>
             </Form>
             <h4>Friends list:</h4>
             <ul>
