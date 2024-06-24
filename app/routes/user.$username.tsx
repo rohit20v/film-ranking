@@ -8,7 +8,7 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"))
     const sessionUser = session.data.user;
     let showAddFriendButton = true;
-    //TODO: remove fried
+    //TODO: remove friend
     const username = params.username;
     if (!sessionUser || username === sessionUser/*searched user is the same logged in*/) {
         showAddFriendButton = false
