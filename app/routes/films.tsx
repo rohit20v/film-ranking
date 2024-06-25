@@ -28,6 +28,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
             if (!movies) throw new Error("Error");
 
             await addMoviesTitle(movies);
+
             return json({err: null, movies, searchedMovies: null});
         } catch (err) {
             console.log("Error fetching data from DB");
@@ -45,7 +46,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
             );
             const searchedMovies = await res.json();
             console.log(searchedMovies)
-            if (searchedMovies?.err){
+            if (searchedMovies?.err) {
                 return json({err: 'No movie found', searchedMovies: [], movies: null})
             }
             return json({err: null, searchedMovies, movies: null});
@@ -138,7 +139,7 @@ function Films() {
         <div>
             <AddFilm/>
             <div className="grid">
-                <div>
+                <div style={{display: "flex", flexDirection: "column"}}>
                     <h2>
                         <span>
                         Watched Movies
@@ -146,11 +147,14 @@ function Films() {
                     </h2>
                     {watchedMovies.length > 0 ? (
                         watchedMovies.reverse().map(movie => (
-                            <article title={movie.name} key={movie.id}>
+                            <article className={'movieCard'} title={movie.name} key={movie.id}>
                                 <header>
                                     <strong className="movieName">{movie.name}</strong>
                                 </header>
-                                <Rating movieId={movie.id} rating={parseInt(movie.rating)}/>
+                                <img src={movie.poster} alt={movie.name + " poster"} style={{width: "100%"}}/>
+                                <footer>
+                                    <Rating movieId={movie.id} rating={parseInt(movie.rating)}/>
+                                </footer>
                             </article>
                         ))
                     ) : (
@@ -165,7 +169,7 @@ function Films() {
                     </h2>
                     {not_watchedMovies.length > 0 ? (
                         not_watchedMovies.reverse().map(movie => (
-                            <article title={movie.name} key={movie.id}>
+                            <article className={'movieCard'} title={movie.name} key={movie.id}>
                                 <header>
                                     <Form style={{display: "flex", justifyContent: "space-between"}}>
                                         <strong className="movieName">{movie.name}</strong>
