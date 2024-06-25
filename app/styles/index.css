@@ -102,11 +102,17 @@
 
 .suggestedMovies {
     animation: fade-blur-in .2s ease-out;
-    transition: .3s ease-in-out;
+    transition: .2s ease-in-out;
+    cursor: pointer;
 }
 
 .suggestedMovies:hover {
     color: var(--underline-color)
+}
+
+.movie-list {
+    max-height: 269px;
+    overflow: auto;
 }
 
 @keyframes fade-blur-in {
