@@ -115,6 +115,10 @@
     overflow: auto;
 }
 
+.movieCard{
+    max-width: 50%
+}
+
 @keyframes fade-blur-in {
     from {
         opacity: 0;
@@ -123,6 +127,11 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
 
+@media (max-width: 1050px) {
+    .movieCard{
+        max-width: 69%
     }
 }
