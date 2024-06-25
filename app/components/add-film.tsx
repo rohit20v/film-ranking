@@ -23,7 +23,9 @@ function AddFilm() {
         formData.append("title", value);
         try {
             search.submit(formData);
+            search.data.isSearching = true
         } catch (e) {
+            search.data.isSearching = false
             console.log(e);
         }
     };
@@ -42,7 +44,7 @@ function AddFilm() {
     return (
         <>
             <h2>
-                <span>CIAO</span>
+                <span>Hey! <span style={{fontSize: "xx-large"}}></span></span>
             </h2>
             <search.Form action={"/films"} method="GET">
                 <input
@@ -53,12 +55,17 @@ function AddFilm() {
                     placeholder={"Inception"}
                     autoComplete={"off"}
                 />
+                {search.data?.isSearching && (
+                    <div aria-busy="true"/>
+                )}
+                {search.data?.searchedMovies?.length === 0 && (
+                    <div className="suggestedMovies">No movies found.</div>
+                )}
             </search.Form>
-            <ul>
+            <ul className={'movie-list'}>
                 {search.data &&
                     search.data?.searchedMovies?.map((movie) => (
                             <li className={'suggestedMovies'}
-                                style={{cursor: "pointer"}}
                                 onClick={() => addMovie(movie?.tconst)}
                                 key={movie?.tconst}
                             >{movie?.primaryTitle}</li>
