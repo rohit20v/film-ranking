@@ -1,4 +1,4 @@
-import { Form, redirect, useActionData } from "@remix-run/react";
+import {Form, Link, redirect, useActionData} from "@remix-run/react";
 import { ActionFunctionArgs, json } from "@remix-run/node";
 import { prisma } from "~/utils/db.server";
 import { Prisma } from "@prisma/client";
@@ -67,6 +67,7 @@ function Sign_in() {
                         placeholder={"***********"}
                         required
                     />
+                    <p style={{fontSize: 16}}>Already have an account? <Link to={'/login'}>Go to login</Link></p>
                     <button type="submit">Login</button>
                     <div className="status">{actionData && <p>{actionData.err}</p>}</div>
                 </Form>

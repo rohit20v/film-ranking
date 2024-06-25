@@ -1,8 +1,8 @@
-import {Form, redirect, useActionData} from "@remix-run/react";
+import {Form, Link, redirect, useActionData} from "@remix-run/react";
 import {ActionFunctionArgs, json} from "@remix-run/node";
 import {prisma} from "~/utils/db.server";
 import {comparePassword} from "~/.server/auth";
-import {getSession, commitSession} from "~/session";
+import {commitSession, getSession} from "~/session";
 
 export const action = async ({request}: ActionFunctionArgs) => {
     const formData = await request.formData();
@@ -59,6 +59,7 @@ function Log_in() {
                         autoComplete={"off"}
                         required
                     />
+                    <p style={{fontSize: 16}}>Don't have an account? <Link to={'/sign_in'}>Register now!</Link></p>
                     <button type="submit">Login</button>
                     <div className="status">{actionData && <p>{actionData.err}</p>}</div>
                 </Form>
