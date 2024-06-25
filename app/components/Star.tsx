@@ -4,8 +4,8 @@ import {useRef, useState} from "react";
 const Star = ({fill, onClick, state}: { fill: string, onClick?:() => void, state: string }) => {
     return <>
         <svg
-            height="54px"
-            width="54px"
+            height="42px"
+            width="42px"
             viewBox="-10 -10 67.94 67.94"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
