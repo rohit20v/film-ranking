@@ -44,6 +44,10 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
                 `http://173.212.203.208:5555/search/${movieLet}`,
             );
             const searchedMovies = await res.json();
+            console.log(searchedMovies)
+            if (searchedMovies?.err){
+                return json({err: 'No movie found', searchedMovies: [], movies: null})
+            }
             return json({err: null, searchedMovies, movies: null});
         } catch (e) {
             return json({err: "Error while searching"});
