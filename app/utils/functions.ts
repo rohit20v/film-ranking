@@ -8,5 +8,5 @@ export const addMoviesTitle = async (movies: userMovies): Promise<void>=>{
         const movieData = await res.json()
         movies.user_movies[i].name = movieData?.primaryTitle || " ";
     }
-    return
+
 }

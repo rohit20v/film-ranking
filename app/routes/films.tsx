@@ -120,17 +120,17 @@ export const action = async ({request}: ActionFunctionArgs) => {
 };
 
 function Films() {
-    const {movies} = useLoaderData<typeof loader>() || {};
-    const user_movies = movies?.user_movies ?? [];
+    const data = useLoaderData<typeof loader>() || {};
+    const user_movies = data.movies?.user_movies ?? [];
 
     const watchedMovies = user_movies.filter(movie => parseInt(movie.rating) > 0);
     const not_watchedMovies = user_movies.filter(movie => parseInt(movie.rating) === 0);
 
     const fetcher = useFetcher();
-    const removeMovie = async (movieId) => {
+    const removeMovie = async (movieId: number) => {
         const formData = new FormData();
         formData.append('formType', 'removeMovie');
-        formData.append('movieId', movieId);
+        formData.append('movieId', String(movieId));
         fetcher.submit(formData, {method: "post", action: "/films"});
     }
 
