@@ -131,7 +131,7 @@ function Films() {
         const formData = new FormData();
         formData.append('formType', 'removeMovie');
         formData.append('movieId', movieId);
-        fetcher.submit(formData, { method: "post", action: "/films" });
+        fetcher.submit(formData, {method: "post", action: "/films"});
     }
 
     return (
@@ -139,7 +139,11 @@ function Films() {
             <AddFilm/>
             <div className="grid">
                 <div>
-                    <h2>Watched Movies</h2>
+                    <h2>
+                        <span>
+                        Watched Movies
+                        </span>
+                    </h2>
                     {watchedMovies.length > 0 ? (
                         watchedMovies.reverse().map(movie => (
                             <article title={movie.name} key={movie.id}>
@@ -150,11 +154,15 @@ function Films() {
                             </article>
                         ))
                     ) : (
-                        <p>No movie found</p>
+                        <span>No movie found</span>
                     )}
                 </div>
                 <div>
-                    <h2>Not-watched Movies</h2>
+                    <h2>
+                        <span>
+                        Not-watched Movies
+                        </span>
+                    </h2>
                     {not_watchedMovies.length > 0 ? (
                         not_watchedMovies.reverse().map(movie => (
                             <article title={movie.name} key={movie.id}>
@@ -168,7 +176,7 @@ function Films() {
                             </article>
                         ))
                     ) : (
-                        <p>No movie found</p>
+                        <span>No movie found</span>
                     )}
                 </div>
             </div>

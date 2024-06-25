@@ -41,7 +41,9 @@ function AddFilm() {
 
     return (
         <>
-            <h2>CIAO</h2>
+            <h2>
+                <span>CIAO</span>
+            </h2>
             <search.Form action={"/films"} method="GET">
                 <input
                     type="text"
