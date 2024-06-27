@@ -9,12 +9,7 @@ export const addMoviesTitle = async (movies: userMovies): Promise<void> => {
             "http://173.212.203.208:5555/tconst/" + movies.user_movies[i].tconst
         );
         const movieData = await res.json();
-        const response = await fetch(
-            `https://www.omdbapi.com/?i=${movies.user_movies[i].tconst}&apikey=${process.env.OMDB_KEY}`
-        );
-        const moviePosterData = await response.json();
         movies.user_movies[i].name = movieData?.primaryTitle || " ";
-        movies.user_movies[i].poster = moviePosterData?.Poster || "No poster found";
     }
 };
 
