@@ -139,10 +139,10 @@ function Films() {
         <div>
             <AddFilm/>
             <div className="grid">
-                <div style={{display: "flex", flexDirection: "column"}}>
+                <div id={'watched'} style={{display: "flex", flexDirection: "column"}}>
                     <h2>
                         <span>
-                        Watched Movies
+                        Watched Movies <a className={'goTo'} href="#not-watched">Go to movies in queue</a>
                         </span>
                     </h2>
                     {watchedMovies.length > 0 ? (
@@ -151,7 +151,7 @@ function Films() {
                                 <header>
                                     <strong className="movieName">{movie.name}</strong>
                                 </header>
-                                <img src={movie.poster} alt={movie.name + " poster"} style={{width: "100%"}}/>
+                                <img src={movie.poster} alt={movie.name + " poster"} className={"poster"}/>
                                 <footer>
                                     <Rating movieId={movie.id} rating={parseInt(movie.rating)}/>
                                 </footer>
@@ -161,22 +161,25 @@ function Films() {
                         <span>No movie found</span>
                     )}
                 </div>
-                <div>
+                <div id={'not-watched'} className={'not-watched'}>
                     <h2>
                         <span>
-                        Not-watched Movies
+                        Not-watched Movies <a className={'goTo'} href="#watched">Go to watched movies</a>
                         </span>
                     </h2>
                     {not_watchedMovies.length > 0 ? (
                         not_watchedMovies.reverse().map(movie => (
-                            <article className={'movieCard'} title={movie.name} key={movie.id}>
+                            <article className={'movieCard'} id={'queue'} title={movie.name} key={movie.id}>
                                 <header>
                                     <Form style={{display: "flex", justifyContent: "space-between"}}>
                                         <strong className="movieName">{movie.name}</strong>
                                         <p onClick={() => removeMovie(movie.id)} className={'remove'}>Remove</p>
                                     </Form>
                                 </header>
-                                <Rating movieId={movie.id} rating={parseInt(movie.rating)}/>
+                                <img src={movie.poster} alt={movie.name + " poster"} className={'poster'}/>
+                                <footer>
+                                    <Rating movieId={movie.id} rating={parseInt(movie.rating)}/>
+                                </footer>
                             </article>
                         ))
                     ) : (
