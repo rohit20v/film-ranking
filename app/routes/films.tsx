@@ -4,7 +4,7 @@ import { Form, redirect, useFetcher, useLoaderData } from "@remix-run/react";
 import AddFilm from "~/components/add-film";
 import { getSession } from "~/session";
 import Rating from "~/components/Star";
-import { addMoviesTitle, getMoviePosterUrl } from "~/utils/functions";
+import { addMoviesTitle, getMoviePosterUrl, getMovieTitle } from "~/utils/functions";
 import MoviePoster from "~/components/MoviePoster";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -30,7 +30,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
             });
             if (!movies) throw new Error("Error");
 
-            await addMoviesTitle(movies);
+            // await addMoviesTitle(movies);
 
             return json({ err: null, movies, searchedMovies: null });
         } catch (err) {
@@ -48,7 +48,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
             console.log("Searching", movieLet);
             const res = await fetch(`http://173.212.203.208:5555/search/${movieLet}`);
             const searchedMovies = await res.json();
-            console.log(searchedMovies);
             if (searchedMovies?.err) {
                 return json({ err: "No movie found", searchedMovies: [], movies: null });
             }
@@ -88,6 +87,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     if (formType === "addFilm") {
         const tconst: string = formData.get("tconst") as string;
+        const movieTitle = await getMovieTitle(tconst);
         console.log("ADDDING FILM tconst", tconst);
         try {
             const userId = await prisma.user.findUnique({
@@ -102,6 +102,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
                 data: {
                     user_id: userId.id,
                     tconst: tconst,
+                    title: movieTitle,
                     rating: 0,
                     created_at: new Date(),
                 },
@@ -168,11 +169,11 @@ function Films() {
                     </h2>
                     {watchedMovies.length > 0 ? (
                         watchedMovies.reverse().map((movie) => (
-                            <article className={"movieCard"} title={movie.name} key={movie.id}>
+                            <article className={"movieCard"} title={movie.title} key={movie.id}>
                                 <header>
-                                    <strong className="movieName">{movie.name}</strong>
+                                    <strong className="movieName">{movie.title}</strong>
                                 </header>
-                                <MoviePoster name={movie.name} tconst={movie.tconst} />
+                                <MoviePoster name={movie.title} tconst={movie.tconst} />
                                 <footer>
                                     <Rating movieId={movie.id} rating={parseInt(movie.rating)} />
                                 </footer>
@@ -196,14 +197,14 @@ function Films() {
                             <article
                                 className={"movieCard"}
                                 id={"queue"}
-                                title={movie.name}
+                                title={movie.title}
                                 key={movie.id}
                             >
                                 <header>
                                     <Form
                                         style={{ display: "flex", justifyContent: "space-between" }}
                                     >
-                                        <strong className="movieName">{movie.name}</strong>
+                                        <strong className="movieName">{movie.title}</strong>
                                         <p
                                             onClick={() => removeMovie(movie.id)}
                                             className={"remove"}
@@ -212,7 +213,7 @@ function Films() {
                                         </p>
                                     </Form>
                                 </header>
-                                <MoviePoster name={movie.name} tconst={movie.tconst} />
+                                <MoviePoster name={movie.title} tconst={movie.tconst} />
                                 <footer>
                                     <Rating movieId={movie.id} rating={parseInt(movie.rating)} />
                                 </footer>
