@@ -6,9 +6,11 @@
     --theme-color-pumpkin: #ff7518;
     --theme-color-blue: #007acc;
     --underline-color: var(--theme-color-blue);
+    scroll-behavior: smooth;
 }
 
 * {
+    /*overflow-x: hidden;*/
     font-family: "Syne", monospace;
     font-optical-sizing: auto;
     font-weight: 600;
@@ -44,11 +46,36 @@
     width: 100%;
 }
 
+.ham {
+    display: none;
+}
+.ham > span {
+    cursor: pointer;
+}
+
+.ham-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+}
 .movieName {
     color: var(--underline-color);
     filter: brightness(100%);
+    font-size: larger;
+    font-weight: bold;
     transition: .2s ease-in-out;
 }
+
 
 .movieName:hover {
     filter: brightness(200%);
@@ -66,6 +93,20 @@
     align-items: center;
 }
 
+.goTo{
+    visibility: hidden;
+    text-decoration: none;
+    font-size: medium;
+    opacity: .5;
+    color: white;
+    transition: .2s ease;
+}
+
+.goTo:hover{
+    opacity: 1;
+}
+
+
 .form {
     padding: 32px;
     background: rgba(255, 255, 255, 0.07);
@@ -79,7 +120,6 @@
     background-color: var(--underline-color);
     color: black;
     border-radius: 8px;
-
 }
 
 .status > p {
@@ -115,8 +155,37 @@
     overflow: auto;
 }
 
-.movieCard{
-    max-width: 50%
+.movieCard {
+    max-width: 50%;
+    text-align: center;
+}
+
+.not-watched {
+    width: 100%
+}
+
+#queue{
+    min-width: 100%
+
+}
+
+.poster{
+    width: 50%;
+    transition: .2s ease;
+}
+
+.poster:hover{
+    scale: 1.2;
+    box-shadow: 0 0 42px 6px black;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes fade-blur-in {
@@ -131,7 +200,19 @@
 }
 
 @media (max-width: 1050px) {
-    .movieCard{
-        max-width: 69%
+    .movieCard {
+        max-width: 100%
     }
+
+    .menu-list {
+        display: none;
+    }
+
+    .ham {
+        display: block;
+    }
+    .goTo{
+        visibility: visible;
+    }
+
 }
