@@ -1,13 +1,13 @@
-import { prisma } from "~/utils/db.server";
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, redirect, useFetcher, useLoaderData } from "@remix-run/react";
+import {prisma} from "~/utils/db.server";
+import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
+import {Form, redirect, useFetcher, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
-import { getSession } from "~/session";
+import {getSession} from "~/session";
 import Rating from "~/components/Star";
-import { addMoviesTitle, getMoviePosterUrl, getMovieTitle } from "~/utils/functions";
+import {getMoviePosterUrl, getMovieTitle} from "~/utils/functions";
 import MoviePoster from "~/components/MoviePoster";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({request}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"));
     const user = session.data.user;
     if (!user) {
@@ -32,28 +32,31 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
             // await addMoviesTitle(movies);
 
-            return json({ err: null, movies, searchedMovies: null });
+            return json({err: null, movies, searchedMovies: null});
         } catch (err) {
             console.log("Error fetching data from DB");
-            return json({ err: "Error fetching data from DB", movies: null });
+            return json({err: "Error fetching data from DB", movies: null});
         }
     }
 
     if (q) {
         const movieLet = q;
         if (!movieLet || movieLet === "") {
-            return json({ err: null, movies: null });
+            return json({err: null, movies: null});
         }
+        const startTime = performance.now()
         try {
             console.log("Searching", movieLet);
             const res = await fetch(`http://173.212.203.208:5555/search/${movieLet}`);
             const searchedMovies = await res.json();
             if (searchedMovies?.err) {
-                return json({ err: "No movie found", searchedMovies: [], movies: null });
+                return json({err: "No movie found", searchedMovies: [], movies: null});
             }
-            return json({ err: null, searchedMovies, movies: null });
+            const endTime = performance.now()
+            console.log(`Fetched in  ${endTime - startTime} milliseconds`)
+            return json({err: null, searchedMovies, movies: null});
         } catch (e) {
-            return json({ err: "Error while searching" });
+            return json({err: "Error while searching"});
         }
     } else {
         if (tconst) {
@@ -74,7 +77,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     }
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({request}: ActionFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"));
     const user = session.data.user;
     if (!user) {
@@ -91,12 +94,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         console.log("ADDDING FILM tconst", tconst);
         try {
             const userId = await prisma.user.findUnique({
-                where: { username: user },
-                select: { id: true },
+                where: {username: user},
+                select: {id: true},
             });
 
             if (!userId) {
-                return json({ err: "Error adding movie" });
+                return json({err: "Error adding movie"});
             }
             const movie = await prisma.user_movie.create({
                 data: {
@@ -110,7 +113,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
             return json(movie);
         } catch (error) {
             console.log("Error adding movie:", error);
-            return json({ err: "Error adding movie" });
+            return json({err: "Error adding movie"});
         }
     } else if (formType === "updateRating") {
         const movieId = formData.get("movieId");
@@ -118,23 +121,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
         try {
             const updatedMovie = await prisma.user_movie.update({
-                where: { id: parseInt(movieId as string) },
-                data: { rating: parseInt(newRating as string) },
+                where: {id: parseInt(movieId as string)},
+                data: {rating: parseInt(newRating as string)},
             });
-            return json({ updatedMovie });
+            return json({updatedMovie});
         } catch (error) {
             console.log("Error updating rating:", error);
-            return json({ err: "Error updating rating" });
+            return json({err: "Error updating rating"});
         }
     } else if (formType === "removeMovie") {
         const movieId = formData.get("movieId");
         try {
             const removeMovie = await prisma.user_movie.delete({
-                where: { id: parseInt(movieId as string) },
+                where: {id: parseInt(movieId as string)},
             });
-            return json({ removeMovie });
+            return json({removeMovie});
         } catch (err) {
-            return json({ err: "Error removing movie" });
+            return json({err: "Error removing movie"});
         }
     }
 };
@@ -151,14 +154,14 @@ function Films() {
         const formData = new FormData();
         formData.append("formType", "removeMovie");
         formData.append("movieId", String(movieId));
-        fetcher.submit(formData, { method: "post", action: "/films" });
+        fetcher.submit(formData, {method: "post", action: "/films"});
     };
 
     return (
         <div>
-            <AddFilm />
+            <AddFilm/>
             <div className="grid">
-                <div id={"watched"} style={{ display: "flex", flexDirection: "column" }}>
+                <div id={"watched"} style={{display: "flex", flexDirection: "column"}}>
                     <h2>
                         <span>
                             Watched Movies{" "}
@@ -167,21 +170,23 @@ function Films() {
                             </a>
                         </span>
                     </h2>
-                    {watchedMovies.length > 0 ? (
-                        watchedMovies.reverse().map((movie) => (
-                            <article className={"movieCard"} title={movie.title} key={movie.id}>
-                                <header>
-                                    <strong className="movieName">{movie.title}</strong>
-                                </header>
-                                <MoviePoster name={movie.title} tconst={movie.tconst} />
-                                <footer>
-                                    <Rating movieId={movie.id} rating={parseInt(movie.rating)} />
-                                </footer>
-                            </article>
-                        ))
-                    ) : (
-                        <span>No movie found</span>
-                    )}
+
+                    <div>
+                        {watchedMovies.length > 0 ? (
+                            watchedMovies.reverse().map((movie) => (
+                                    <article className={"movieCard"} title={movie.title} key={movie.id}>
+                                        <header>
+                                            <MoviePoster name={movie.title} tconst={movie.tconst}/>
+                                        </header>
+                                        <strong className="movieName">{movie.title}</strong>
+                                        <Rating movieId={movie.id} rating={parseInt(movie.rating)}/>
+                                    </article>
+                                )
+                            )
+                        ) : (
+                            <span>No movie found</span>
+                        )}
+                    </div>
                 </div>
                 <div id={"not-watched"} className={"not-watched"}>
                     <h2>
@@ -202,7 +207,7 @@ function Films() {
                             >
                                 <header>
                                     <Form
-                                        style={{ display: "flex", justifyContent: "space-between" }}
+                                        style={{display: "flex", justifyContent: "space-between"}}
                                     >
                                         <strong className="movieName">{movie.title}</strong>
                                         <p
@@ -213,9 +218,9 @@ function Films() {
                                         </p>
                                     </Form>
                                 </header>
-                                <MoviePoster name={movie.title} tconst={movie.tconst} />
+                                <MoviePoster name={movie.title} tconst={movie.tconst}/>
                                 <footer>
-                                    <Rating movieId={movie.id} rating={parseInt(movie.rating)} />
+                                    <Rating movieId={movie.id} rating={parseInt(movie.rating)}/>
                                 </footer>
                             </article>
                         ))

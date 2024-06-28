@@ -1,19 +1,23 @@
-import { useFetcher } from "@remix-run/react";
-import { useEffect } from "react";
+import {useFetcher} from "@remix-run/react";
+import {useEffect} from "react";
 
-const MoviePoster = ({ tconst, name }) => {
+const MoviePoster = ({tconst, name}) => {
     const poster = useFetcher();
 
     useEffect(() => {
         const formData = new FormData();
         formData.append("formType", "moviePoster");
         formData.append("tconst", String(tconst));
-        poster.submit(formData, { method: "GET", action: "/films" });
+        poster.submit(formData, {method: "GET", action: "/films"});
     }, []);
 
     return (
         <>
-            <img alt={name + " poster"} className={"poster"} src={poster?.data?.posterUrl} />
+            {!poster?.data?.posterUrl ?
+                (<div aria-busy={true}></div>)
+                :
+                (<img alt={name + " poster"} src={poster?.data?.posterUrl} className={"poster"}/>)
+            }
         </>
     );
 };

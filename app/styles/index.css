@@ -171,7 +171,9 @@
 
 .poster{
     width: 50%;
+    background: gray;
     transition: .2s ease;
+    border-radius: 3px;
 }
 
 .poster:hover{

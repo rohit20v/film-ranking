@@ -1,7 +1,4 @@
-import { User_movie } from "@prisma/client";
 import process from "process";
-
-type userMovies = { user_movies: User_movie[] };
 
 export const getMovieTitle = async (tconst: string): Promise<string> => {
     const res = await fetch("http://173.212.203.208:5555/tconst/" + tconst);
