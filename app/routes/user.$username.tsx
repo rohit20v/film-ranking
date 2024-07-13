@@ -1,20 +1,19 @@
-import {Form, redirect, useLoaderData} from "@remix-run/react";
+import {Form, useLoaderData} from "@remix-run/react";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {prisma} from "~/utils/db.server";
-import {getSession} from "~/session";
 import {OnlyStar} from "~/components/Star";
-import {addMoviesTitle} from "~/utils/functions";
 import MoviePoster from "~/components/MoviePoster";
+import {checkLogin} from "~/utils/auth";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get("cookie"));
-    const sessionUser = session.data.user;
+    const sessionUser = await checkLogin(request)
+
     let showAddFriendButton = true;
     //TODO: remove friend
-    const username = params.username;
+    const userSearched = params.username;
     if (
         !sessionUser ||
-        username === sessionUser /*searched user is the same logged in*/
+        userSearched === sessionUser /*searched user is the same logged in*/
     ) {
         showAddFriendButton = false;
     }
@@ -29,11 +28,11 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const sessionUserFriends = userFriends?.following.map(
         (x) => x.friend.username,
     );
-    if (sessionUserFriends?.includes(username)) {
+    if (sessionUserFriends?.includes(userSearched)) {
         showAddFriendButton = false;
     }
     const userMovies = await prisma.user.findFirst({
-        where: {username: username},
+        where: {username: userSearched},
         select: {user_movies: true},
     });
     if (userMovies === null) {
@@ -45,16 +44,12 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
         });
     }
 
-    return json({err: null, username, userMovies, showAddFriendButton});
+    return json({err: null, username: userSearched, userMovies, showAddFriendButton});
 };
 
 export const action = async ({request, params}: ActionFunctionArgs) => {
-    const session = await getSession(request.headers.get("cookie"));
-    const user = session.data.user;
-    if (!user) {
-        //verify if the user is logged
-        return redirect("/login");
-    }
+    await checkLogin(request)
+
     const friendToAdd = params.username;
     const friendToAddId = await prisma.user.findFirst({
         where: {username: friendToAdd},

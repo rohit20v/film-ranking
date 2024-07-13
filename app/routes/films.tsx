@@ -1,19 +1,14 @@
 import {prisma} from "~/utils/db.server";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
-import {Form, redirect, useFetcher, useLoaderData} from "@remix-run/react";
+import {Form, useFetcher, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
-import {getSession} from "~/session";
 import Rating from "~/components/Star";
 import {getMoviePosterUrl, getMovieTitle} from "~/utils/functions";
 import MoviePoster from "~/components/MoviePoster";
+import {checkLogin} from "~/utils/auth";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get("cookie"));
-    const user = session.data.user;
-    if (!user) {
-        //verify if the user is logged
-        return redirect("/login");
-    }
+    const user = await checkLogin(request)
 
     const q = new URL(request.url).searchParams.get("title");
     const tconst = new URL(request.url).searchParams.get("tconst");
@@ -78,12 +73,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 };
 
 export const action = async ({request}: ActionFunctionArgs) => {
-    const session = await getSession(request.headers.get("cookie"));
-    const user = session.data.user;
-    if (!user) {
-        // Verify if the user is logged in
-        return redirect("/login");
-    }
+    const user = await checkLogin(request)
 
     const formData = await request.formData();
     const formType = formData.get("formType");
@@ -142,7 +132,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
 };
 
-function Films() {
+function films() {
     const data = useLoaderData<typeof loader>() || {};
     const user_movies = data.movies?.user_movies ?? [];
 
@@ -233,4 +223,4 @@ function Films() {
     );
 }
 
-export default Films;
+export default films;

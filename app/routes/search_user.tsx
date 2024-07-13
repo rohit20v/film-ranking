@@ -6,9 +6,6 @@ import {getSession} from "~/session";
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get("cookie"))
     const username = session.data.user;
-    if (!username) { //verify if the user is logged
-        return redirect("/login");
-    }
 
     try {
         const friends = await prisma.user_friends.findMany({
@@ -24,12 +21,6 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {
-    const session = await getSession(request.headers.get("cookie"))
-    const user = session.data.user;
-    if (!user) { //verify if the user is logged
-        return redirect("/login");
-    }
-
     const formData = await request.formData();
     const formUsername: string = formData.get("username") as string;
     if (!formUsername) {
@@ -46,7 +37,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
     return json({err: "Error user not found"})
 }
 
-const Search_user = () => {
+const search_user = () => {
     const data = useLoaderData<typeof loader>()
     const friends = data?.friends ?? [];
 
@@ -70,4 +61,4 @@ const Search_user = () => {
     )
 }
 
-export default Search_user;
+export default search_user;

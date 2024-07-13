@@ -1,33 +1,41 @@
 import {json, LoaderFunctionArgs} from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { getSession } from "~/session";
-import { prisma } from "~/utils/db.server";
+import {useLoaderData} from "@remix-run/react";
+import {prisma} from "~/utils/db.server";
+import {OnlyStar} from "~/components/Star";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get("cookie"));
-
-    if (session.data.user) {
-        const canLogin = await prisma.user.findUnique({
-            select: {
-                username: true,
-            },
-            where: {
-                username: session.data.user,
-            },
-        });
-        if (canLogin){
-            return json({user: session.data, err: null});
+export const loader = async ({request}: LoaderFunctionArgs) => {
+    const filmsRatings = await prisma.user_movie.groupBy({
+        by: ['tconst', 'title'],
+        _avg: {
+            rating: true,
         }
-    }
-    return json({user: null, err: "No session found"});
+    })
+    const ratings = filmsRatings.map(({tconst, title, _avg}) => {
+//        const rating = parseInt(_avg?.rating??"0")
+        return {tconst, title, rating: Number(_avg?.rating ?? "0")}
+    })
+    return json({movies: ratings, err: "No session found"});
 };
 
 export default function Index() {
-    const {user} = useLoaderData<typeof loader>();
+    const {movies} = useLoaderData<typeof loader>();
     return (
         <>
             <div className={"center"}>
-                {user ? (<p>Ben tornato: {user?.user}</p>) : (<p>Non hai effettuato l'accesso</p>)}
+                <ul >
+                    {
+                        movies.map(({tconst,title, rating}) => {
+                            return (
+                                <li key={tconst} style={{listStyleType: "none"}}>
+                                    <article>
+                                        <header>{title}</header>
+                                        <OnlyStar star={rating}/>
+                                    </article>
+                                </li>
+                            )
+                        })
+                    }
+                </ul>
             </div>
         </>
     );

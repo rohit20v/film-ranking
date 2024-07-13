@@ -1,6 +1,7 @@
 import {NavLink} from "@remix-run/react";
 import ThemeToggler from "~/components/ThemeToggler";
 import {useRef, useState} from "react";
+import {destroySession, getSession} from "~/session";
 
 function Navbar() {
     const menu = useRef()
