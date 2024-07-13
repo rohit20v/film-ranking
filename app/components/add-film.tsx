@@ -1,8 +1,9 @@
-import {useFetcher} from "@remix-run/react";
+import {FetcherWithComponents, useFetcher} from "@remix-run/react";
+import {searchedMovie} from "~/routes/films";
+
 
 function AddFilm() {
-    const search = useFetcher();
-
+    const search: FetcherWithComponents<{ searchedMovies: searchedMovie[] }> = useFetcher();
     const addMovie = async (tconst: string) => {
         if (!tconst) {
             return;
@@ -21,13 +22,8 @@ function AddFilm() {
         const formData = new FormData();
         formData.append("formType", "searchFilm");
         formData.append("title", value);
-        try {
-            search.submit(formData);
-            search.data.isSearching = true
-        } catch (e) {
-            search.data.isSearching = false
-            console.log(e);
-        }
+
+        search.submit(formData);
     };
 
     function debounce<T extends (...args: any[]) => any>(cb: T, wait: number = 400) {
@@ -55,7 +51,7 @@ function AddFilm() {
                     placeholder={"Inception"}
                     autoComplete={"off"}
                 />
-                {search.data?.isSearching && (
+                {search.state === "loading" && (
                     <div aria-busy="true"/>
                 )}
                 {search.data?.searchedMovies?.length === 0 && (

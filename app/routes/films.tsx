@@ -1,11 +1,58 @@
-import {prisma} from "~/utils/db.server";
+import {prisma} from "~/.server/db";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {Form, useFetcher, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
 import Rating from "~/components/Star";
-import {getMoviePosterUrl, getMovieTitle} from "~/utils/functions";
+import {getMoviePosterUrl, getMovieTitle} from "~/.server/functions";
 import MoviePoster from "~/components/MoviePoster";
-import {checkLogin} from "~/utils/auth";
+import {checkLogin} from "~/.server/auth";
+
+export type searchedMovie = {
+    tconst: string
+    titleType: string
+    primaryTitle: string
+    originalTitle: string
+    startYear: number
+    averageRating: number
+    numVotes: number
+}
+const getUserMovies = async (user: string): Promise<user_movies[]> => {
+    try {
+        const movies = await prisma.user.findFirst({
+            where: {
+                username: user,
+            },
+            select: {
+                user_movies: true,
+            },
+        });
+        if (!movies) return []
+        return movies.user_movies;
+    } catch (err) {
+        console.log("Error fetching data from DB");
+        return []
+    }
+}
+const searchMovie = async (search: string): Promise<searchedMovie[]> => {
+    if (!search || search === "") {
+        return []
+    }
+    const startTime = performance.now()
+    try {
+        console.log("Searching", search);
+        const res = await fetch(`http://173.212.203.208:5555/search/${search}`);
+        const searchedMovies = await res.json();
+        if (searchedMovies?.err) {
+            return []
+        }
+        const endTime = performance.now()
+        console.log(`Fetched in  ${endTime - startTime} milliseconds`)
+        return searchedMovies
+    } catch (e) {
+        return []
+    }
+}
+
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const user = await checkLogin(request)
@@ -14,62 +61,23 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     const tconst = new URL(request.url).searchParams.get("tconst");
 
     if (!q && !tconst) {
-        try {
-            const movies = await prisma.user.findFirst({
-                where: {
-                    username: user,
-                },
-                select: {
-                    user_movies: true,
-                },
-            });
-            if (!movies) throw new Error("Error");
-
-            // await addMoviesTitle(movies);
-
-            return json({err: null, movies, searchedMovies: null});
-        } catch (err) {
-            console.log("Error fetching data from DB");
-            return json({err: "Error fetching data from DB", movies: null});
-        }
+        const movies = await getUserMovies(user)
+        return json({movies, searchedMovies: null, posterUrl: null});
     }
-
     if (q) {
-        const movieLet = q;
-        if (!movieLet || movieLet === "") {
-            return json({err: null, movies: null});
-        }
-        const startTime = performance.now()
-        try {
-            console.log("Searching", movieLet);
-            const res = await fetch(`http://173.212.203.208:5555/search/${movieLet}`);
-            const searchedMovies = await res.json();
-            if (searchedMovies?.err) {
-                return json({err: "No movie found", searchedMovies: [], movies: null});
-            }
-            const endTime = performance.now()
-            console.log(`Fetched in  ${endTime - startTime} milliseconds`)
-            return json({err: null, searchedMovies, movies: null});
-        } catch (e) {
-            return json({err: "Error while searching"});
-        }
+        const searchedMovies: searchedMovie[] = await searchMovie(q)
+        return json({movies: null, searchedMovies, posterUrl: null})
     } else {
         if (tconst) {
             const url = await getMoviePosterUrl(tconst);
-            return json({
-                err: null,
-                searchedMovies: null,
-                movies: null,
-                posterUrl: url,
-            });
+            return json({searchedMovies: null, movies: null, posterUrl: url,});
         }
-        return json({
-            err: "Error fetching poster img",
-            searchedMovies: null,
-            movies: null,
-            posterUrl: null,
-        });
     }
+    return json({
+        searchedMovies: null,
+        movies: null,
+        posterUrl: null,
+    });
 };
 
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -132,9 +140,9 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
 };
 
-function films() {
-    const data = useLoaderData<typeof loader>() || {};
-    const user_movies = data.movies?.user_movies ?? [];
+function Films() {
+    const data= useLoaderData<typeof loader>();
+    const user_movies = data?.movies??[];
 
     const watchedMovies = user_movies.filter((movie) => parseInt(movie.rating) > 0);
     const not_watchedMovies = user_movies.filter((movie) => parseInt(movie.rating) === 0);
@@ -223,4 +231,4 @@ function films() {
     );
 }
 
-export default films;
+export default Films;

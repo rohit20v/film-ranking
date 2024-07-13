@@ -1,7 +1,7 @@
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {Form, Link, redirect, useLoaderData} from "@remix-run/react";
-import {prisma} from "~/utils/db.server";
-import {checkLogin} from "~/utils/auth";
+import {prisma} from "~/.server/db";
+import {checkLogin} from "~/.server/auth";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const username = await checkLogin(request)
@@ -36,7 +36,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
     return json({err: "Error user not found"})
 }
 
-const search_user = () => {
+const Search_user = () => {
     const data = useLoaderData<typeof loader>()
     const friends = data?.friends ?? [];
 
@@ -60,4 +60,4 @@ const search_user = () => {
     )
 }
 
-export default search_user;
+export default Search_user;

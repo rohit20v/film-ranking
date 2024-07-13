@@ -1,8 +1,8 @@
-import {useFetcher} from "@remix-run/react";
+import {FetcherWithComponents, useFetcher} from "@remix-run/react";
 import {useEffect} from "react";
 
-const MoviePoster = ({tconst, name}) => {
-    const poster = useFetcher();
+const MoviePoster = ({tconst, name}: { tconst: string, name: string }) => {
+    const poster:FetcherWithComponents<{posterUrl:string}> = useFetcher();
 
     useEffect(() => {
         const formData = new FormData();

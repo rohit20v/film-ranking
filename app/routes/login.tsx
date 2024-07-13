@@ -1,6 +1,6 @@
 import {Form, Link, redirect, useActionData} from "@remix-run/react";
 import {ActionFunctionArgs, json} from "@remix-run/node";
-import {prisma} from "~/utils/db.server";
+import {prisma} from "~/.server/db";
 import {comparePassword} from "~/.server/auth";
 import {commitSession, getSession} from "~/session";
 

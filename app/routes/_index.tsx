@@ -1,6 +1,6 @@
 import {json, LoaderFunctionArgs} from "@remix-run/node";
 import {useLoaderData} from "@remix-run/react";
-import {prisma} from "~/utils/db.server";
+import {prisma} from "~/.server/db";
 import {OnlyStar} from "~/components/Star";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {

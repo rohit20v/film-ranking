@@ -1,9 +1,9 @@
 import {Form, useLoaderData} from "@remix-run/react";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
-import {prisma} from "~/utils/db.server";
+import {prisma} from "~/.server/db";
 import {OnlyStar} from "~/components/Star";
 import MoviePoster from "~/components/MoviePoster";
-import {checkLogin} from "~/utils/auth";
+import {checkLogin} from "~/.server/auth";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const sessionUser = await checkLogin(request)
@@ -48,7 +48,7 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
 };
 
 export const action = async ({request, params}: ActionFunctionArgs) => {
-    await checkLogin(request)
+    const user = await checkLogin(request);
 
     const friendToAdd = params.username;
     const friendToAddId = await prisma.user.findFirst({
@@ -73,7 +73,7 @@ export const action = async ({request, params}: ActionFunctionArgs) => {
     return json({err: null});
 };
 
-const userFilms = () => {
+const UserFilms = () => {
     const data = useLoaderData<typeof loader>();
 
     const username = data?.username ?? "";
@@ -116,4 +116,4 @@ const userFilms = () => {
         </>
     );
 };
-export default userFilms;
+export default UserFilms;
