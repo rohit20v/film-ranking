@@ -57,7 +57,6 @@ const Rating = ({movieId, rating}: { movieId: number, rating: number }) => {
 
         try {
             fetcher.submit(formData, { method: "post", action: "/films" });
-
         } catch (error) {
             console.error('Error updating rating:', error);
         }

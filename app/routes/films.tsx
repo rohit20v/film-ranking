@@ -1,57 +1,16 @@
-import {prisma} from "~/.server/db";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {Form, useFetcher, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
 import Rating from "~/components/Star";
-import {getMoviePosterUrl, getMovieTitle} from "~/.server/functions";
+import {
+    addFilm,
+    getMoviePosterUrl,
+    getUserMovies, removeMovie,
+    searchedMovie,
+    searchMovie, updateMovieRating
+} from "~/.server/functions";
 import MoviePoster from "~/components/MoviePoster";
 import {checkLogin} from "~/.server/auth";
-
-export type searchedMovie = {
-    tconst: string
-    titleType: string
-    primaryTitle: string
-    originalTitle: string
-    startYear: number
-    averageRating: number
-    numVotes: number
-}
-const getUserMovies = async (user: string): Promise<user_movies[]> => {
-    try {
-        const movies = await prisma.user.findFirst({
-            where: {
-                username: user,
-            },
-            select: {
-                user_movies: true,
-            },
-        });
-        if (!movies) return []
-        return movies.user_movies;
-    } catch (err) {
-        console.log("Error fetching data from DB");
-        return []
-    }
-}
-const searchMovie = async (search: string): Promise<searchedMovie[]> => {
-    if (!search || search === "") {
-        return []
-    }
-    const startTime = performance.now()
-    try {
-        console.log("Searching", search);
-        const res = await fetch(`http://173.212.203.208:5555/search/${search}`);
-        const searchedMovies = await res.json();
-        if (searchedMovies?.err) {
-            return []
-        }
-        const endTime = performance.now()
-        console.log(`Fetched in  ${endTime - startTime} milliseconds`)
-        return searchedMovies
-    } catch (e) {
-        return []
-    }
-}
 
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
@@ -73,11 +32,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
             return json({searchedMovies: null, movies: null, posterUrl: url,});
         }
     }
-    return json({
-        searchedMovies: null,
-        movies: null,
-        posterUrl: null,
-    });
+    return json({searchedMovies: null, movies: null, posterUrl: null,});
 };
 
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -88,61 +43,23 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
     if (formType === "addFilm") {
         const tconst: string = formData.get("tconst") as string;
-        const movieTitle = await getMovieTitle(tconst);
-        console.log("ADDDING FILM tconst", tconst);
-        try {
-            const userId = await prisma.user.findUnique({
-                where: {username: user},
-                select: {id: true},
-            });
-
-            if (!userId) {
-                return json({err: "Error adding movie"});
-            }
-            const movie = await prisma.user_movie.create({
-                data: {
-                    user_id: userId.id,
-                    tconst: tconst,
-                    title: movieTitle,
-                    rating: 0,
-                    created_at: new Date(),
-                },
-            });
-            return json(movie);
-        } catch (error) {
-            console.log("Error adding movie:", error);
-            return json({err: "Error adding movie"});
-        }
+        const {movie, err} = await addFilm(tconst, user)
+        return json({err, movie});
     } else if (formType === "updateRating") {
         const movieId = formData.get("movieId");
         const newRating = formData.get("newRating");
-
-        try {
-            const updatedMovie = await prisma.user_movie.update({
-                where: {id: parseInt(movieId as string)},
-                data: {rating: parseInt(newRating as string)},
-            });
-            return json({updatedMovie});
-        } catch (error) {
-            console.log("Error updating rating:", error);
-            return json({err: "Error updating rating"});
-        }
+        const {err} = await updateMovieRating(movieId as string, newRating as string)
+        return json({err, movie: null});
     } else if (formType === "removeMovie") {
         const movieId = formData.get("movieId");
-        try {
-            const removeMovie = await prisma.user_movie.delete({
-                where: {id: parseInt(movieId as string)},
-            });
-            return json({removeMovie});
-        } catch (err) {
-            return json({err: "Error removing movie"});
-        }
+        const {err} = await removeMovie(movieId as string)
+        return json({err, movie: null});
     }
 };
 
 function Films() {
-    const data= useLoaderData<typeof loader>();
-    const user_movies = data?.movies??[];
+    const data = useLoaderData<typeof loader>();
+    const user_movies = data?.movies ?? [];
 
     const watchedMovies = user_movies.filter((movie) => parseInt(movie.rating) > 0);
     const not_watchedMovies = user_movies.filter((movie) => parseInt(movie.rating) === 0);

@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="61772381-7e60-4ebc-9c51-baaed49142b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Navbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/search_user.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/search_user.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.server/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/.server/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.server/functions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/.server/functions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/Star.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Star.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/add-film.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/add-film.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/films.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/films.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,11 +51,19 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\lucai\\Documents\\GitHub\\film-ranking\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\lucai\Documents\GitHub\film-ranking\app\.server" />
+    </key>
+    <key name="es6.move.members.recent.items">
+      <recent name="C:\Users\lucai\Documents\GitHub\film-ranking\app\.server\functions.ts" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -73,6 +84,8 @@
       <workItem from="1720863477234" duration="287000" />
       <workItem from="1720863773095" duration="162000" />
       <workItem from="1720863942002" duration="13000" />
+      <workItem from="1720864326523" duration="4087000" />
+      <workItem from="1720872429282" duration="3266000" />
     </task>
     <servers />
   </component>

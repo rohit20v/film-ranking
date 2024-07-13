@@ -27,6 +27,5 @@ export const checkLogin = async (request: Request): Promise<string> => {
         //verify if the user exists in the db
         throw redirect("/login")
     }
-    console.log("logged", user.username)
     return user.username
 }

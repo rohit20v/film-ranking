@@ -1,5 +1,6 @@
 import {FetcherWithComponents, useFetcher} from "@remix-run/react";
-import {searchedMovie} from "~/routes/films";
+
+import {searchedMovie} from "~/.server/functions";
 
 
 function AddFilm() {
