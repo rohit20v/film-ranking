@@ -48,11 +48,11 @@ export const action = async ({request}: ActionFunctionArgs) => {
     } else if (formType === "updateRating") {
         const movieId = formData.get("movieId");
         const newRating = formData.get("newRating");
-        const {err} = await updateMovieRating(movieId as string, newRating as string)
+        const {err} = await updateMovieRating(Number(movieId), Number(newRating), user)
         return json({err, movie: null});
     } else if (formType === "removeMovie") {
         const movieId = formData.get("movieId");
-        const {err} = await removeMovie(movieId as string)
+        const {err} = await removeMovie(Number(movieId), user)
         return json({err, movie: null});
     }
 };

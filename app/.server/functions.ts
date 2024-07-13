@@ -91,11 +91,29 @@ export const addFilm = async (tconst: string, user: string) => {
     }
 }
 
-export const updateMovieRating = async (movieId: string, newRating: string) => {
+const checkUserHasMovie = async (user: string, movieId: number): Promise<boolean> => {
+    const userMovie = await prisma.user_movie.findUnique({
+        where: {
+            id: movieId,
+            user: {username: user}
+        },
+    });
+    console.log(userMovie)
+    if (userMovie?.id) { //the user has created that movie
+        return true
+    }
+    return false
+}
+
+export const updateMovieRating = async (movieId: number, newRating: number, user: string) => {
+    const movieOwner = await checkUserHasMovie(user, movieId)
+    if (!movieOwner){
+        return {err: "Movie not created by the user"}
+    }
     try {
         await prisma.user_movie.update({
-            where: {id: parseInt(movieId)},
-            data: {rating: parseInt(newRating)},
+            where: {id: movieId},
+            data: {rating: newRating},
         });
         return {err: null};
     } catch (error) {
@@ -104,10 +122,14 @@ export const updateMovieRating = async (movieId: string, newRating: string) => {
     }
 }
 
-export const removeMovie = async (movieId: string) => {
+export const removeMovie = async (movieId: number, user: string) => {
+    const movieOwner = await checkUserHasMovie(user, movieId)
+    if (!movieOwner){
+        return {err: "Movie not created by the user"}
+    }
     try {
         await prisma.user_movie.delete({
-            where: {id: parseInt(movieId as string)},
+            where: {id: movieId},
         });
         return {err: null};
     } catch (err) {
