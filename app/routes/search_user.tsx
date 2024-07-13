@@ -1,12 +1,10 @@
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {Form, Link, redirect, useLoaderData} from "@remix-run/react";
 import {prisma} from "~/utils/db.server";
-import {getSession} from "~/session";
+import {checkLogin} from "~/utils/auth";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get("cookie"))
-    const username = session.data.user;
-
+    const username = await checkLogin(request)
     try {
         const friends = await prisma.user_friends.findMany({
             include: {
@@ -21,6 +19,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {
+    await checkLogin(request)
     const formData = await request.formData();
     const formUsername: string = formData.get("username") as string;
     if (!formUsername) {
