@@ -40,9 +40,7 @@ function AddFilm() {
 
     return (
         <>
-            <h2>
-                <span>Hey! <span style={{fontSize: "xx-large"}}></span></span>
-            </h2>
+            <p>Search a movie:</p>
             <search.Form action={"/films"} method="GET">
                 <input
                     type="text"

@@ -77,14 +77,14 @@ function Films() {
             <AddFilm/>
             <div className="grid">
                 <div id={"watched"} style={{display: "flex", flexDirection: "column"}}>
-                    <h2>
+                    <h3>
                         <span>
                             Watched Movies{" "}
                             <a className={"goTo"} href="#not-watched">
                                 Go to movies in queue
                             </a>
                         </span>
-                    </h2>
+                    </h3>
 
                     <div>
                         {watchedMovies.length > 0 ? (
@@ -104,14 +104,14 @@ function Films() {
                     </div>
                 </div>
                 <div id={"not-watched"} className={"not-watched"}>
-                    <h2>
+                    <h3>
                         <span>
                             Not-watched Movies{" "}
                             <a className={"goTo"} href="#watched">
                                 Go to watched movies
                             </a>
                         </span>
-                    </h2>
+                    </h3>
                     {not_watchedMovies.length > 0 ? (
                         not_watchedMovies.reverse().map((movie) => (
                             <article
