@@ -1,6 +1,5 @@
 import process from "process";
 import {prisma} from "~/.server/db";
-import {json} from "@remix-run/node";
 
 export const getMovieTitle = async (tconst: string): Promise<string> => {
     const res = await fetch("http://173.212.203.208:5555/tconst/" + tconst);

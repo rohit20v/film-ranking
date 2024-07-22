@@ -1,20 +1,21 @@
 import {Form, Link, redirect, useActionData} from "@remix-run/react";
-import { ActionFunctionArgs, json } from "@remix-run/node";
-import { prisma } from "~/.server/db";
-import { Prisma } from "@prisma/client";
-import { encrypt } from "~/.server/auth";
-import { commitSession, getSession } from "~/session";
+import {ActionFunctionArgs, json} from "@remix-run/node";
+import {prisma} from "~/.server/db";
+import {Prisma} from "@prisma/client";
+import {encrypt} from "~/.server/auth";
+import {commitSession, getSession} from "~/session";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({request}: ActionFunctionArgs) => {
     const formData = await request.formData();
     const username = formData.get("username") as string;
     const username_lower = username.toLowerCase();
     const password = formData.get("pass") as string;
     if ((!username_lower && !password) || username_lower === "" || password === "") {
-        return json({ err: "Error specify all the fields" });
+        return json({err: "Error specify all the fields"});
     }
 
     const hashedPW = await encrypt(password);
+    console.log("hash", hashedPW)
     try {
         const createdUser = await prisma.user.create({
             data: {
@@ -35,10 +36,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     } catch (Error) {
         if (Error instanceof Prisma.PrismaClientKnownRequestError) {
             if (Error.code === "P2002") {
-                return json({ err: "Error username already taken" });
+                return json({err: "Error username already taken"});
             }
         }
-        return json({ err: "Error creating user" });
+        console.log("e",Error)
+        return json({err: "Error creating user"});
     }
 };
 

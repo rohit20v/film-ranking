@@ -4,19 +4,22 @@ import {prisma} from "~/.server/db";
 import {OnlyStar} from "~/components/Star";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
-    const filmsRatings = await prisma.user_movie.groupBy({
-        by: ['tconst', 'title'],
-        _avg: {
-            rating: true,
-        },
-        orderBy: {_avg: {rating: "desc"}},
-        take: 5,
-    })
-    const ratings = filmsRatings.map(({tconst, title, _avg}) => {
-//        const rating = parseInt(_avg?.rating??"0")
-        return {tconst, title, rating: Number(_avg?.rating ?? "0")}
-    })
-    return json({movies: ratings, err: "No session found"});
+    try {
+        const filmsRatings = await prisma.user_movie.groupBy({
+            by: ['tconst', 'title'],
+            _avg: {
+                rating: true,
+            },
+            orderBy: {_avg: {rating: "desc"}},
+            take: 5,
+        })
+        const ratings = filmsRatings.map(({tconst, title, _avg}) => {
+            return {tconst, title, rating: Number(_avg?.rating ?? "0")}
+        })
+        return json({movies: ratings});
+    } catch (e) {
+        return json({movies: null})
+    }
 };
 
 export default function Index() {
@@ -28,7 +31,7 @@ export default function Index() {
                     <h4>Top rated movies</h4>
                     <ul>
                         {
-                            movies.map(({tconst, title, rating}) => {
+                            movies?.map(({tconst, title, rating}) => {
                                 return (
                                     <li key={tconst} style={{listStyleType: "none"}}>
                                         <article>

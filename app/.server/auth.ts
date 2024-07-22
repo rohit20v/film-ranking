@@ -8,7 +8,7 @@ export const encrypt = async (password: string): Promise<string> => {
     return await bcrypt.hash(password, saltRounds)
 }
 
-export const comparePassword = async (inputPassword:string, storedEncryptedPassword: string): Promise<boolean> => {
+export const comparePassword = async (inputPassword: string, storedEncryptedPassword: string): Promise<boolean> => {
     return await bcrypt.compare(inputPassword, storedEncryptedPassword);
 }
 
@@ -19,13 +19,17 @@ export const checkLogin = async (request: Request): Promise<string> => {
         //verify if the user has cookie
         throw redirect("/login")
     }
-    const user = await prisma.user.findFirst({
-        where: {username: cookieUser},
-        select: {username: true}
-    })
-    if (!user) {
-        //verify if the user exists in the db
+    try {
+        const user = await prisma.user.findFirst({
+            where: {username: cookieUser},
+            select: {username: true}
+        })
+        if (!user) {
+            //verify if the user exists in the db
+            throw redirect("/login")
+        }
+        return user.username
+    } catch (e) {
         throw redirect("/login")
     }
-    return user.username
 }
