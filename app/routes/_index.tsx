@@ -8,7 +8,9 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
         by: ['tconst', 'title'],
         _avg: {
             rating: true,
-        }
+        },
+        orderBy: {_avg: {rating: "desc"}},
+        take: 5,
     })
     const ratings = filmsRatings.map(({tconst, title, _avg}) => {
 //        const rating = parseInt(_avg?.rating??"0")
@@ -22,20 +24,23 @@ export default function Index() {
     return (
         <>
             <div className={"center"}>
-                <ul >
-                    {
-                        movies.map(({tconst,title, rating}) => {
-                            return (
-                                <li key={tconst} style={{listStyleType: "none"}}>
-                                    <article>
-                                        <header>{title}</header>
-                                        <OnlyStar star={rating}/>
-                                    </article>
-                                </li>
-                            )
-                        })
-                    }
-                </ul>
+                <div className={"container"}>
+                    <h4>Top rated movies</h4>
+                    <ul>
+                        {
+                            movies.map(({tconst, title, rating}) => {
+                                return (
+                                    <li key={tconst} style={{listStyleType: "none"}}>
+                                        <article>
+                                            <header>{title}</header>
+                                            <OnlyStar star={rating}/>
+                                        </article>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                </div>
             </div>
         </>
     );
