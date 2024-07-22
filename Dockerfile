@@ -18,6 +18,6 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 remix
 COPY --from=builder /app .
 USER remix
-EXPOSE 8080
-ENV PORT 8080
+EXPOSE 8081
+ENV PORT 8081
 CMD ["npm", "run", "start"]
