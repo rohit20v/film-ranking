@@ -11,6 +11,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build && npm cache clean --force
+RUN npx prisma migrate deploy
 
 FROM base AS runner
 WORKDIR /app
