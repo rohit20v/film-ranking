@@ -1,31 +1,33 @@
-import {useState} from "react";
-import {IoInvertMode, IoInvertModeOutline} from "react-icons/io5";
+import {useEffect, useState} from 'react';
+import {FaMoon, FaSun} from "react-icons/fa";
 
-const ThemeToggler = () => {
-    const [currentTheme, setCurrentTheme] = useState("blue");
+
+export default function ThemeToggler() {
+    const [theme, setTheme] = useState('dark');
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+    }, [theme]);
 
     const toggleTheme = () => {
-        const newTheme = currentTheme === "blue" ? "pumpkin" : "blue";
-        setCurrentTheme(newTheme);
-
-        const root = document.documentElement;
-        root.style.setProperty("--underline-color", `var(--theme-color-${newTheme})`);
-
-        const links = document.querySelectorAll("link[rel=stylesheet]") as NodeListOf<HTMLLinkElement>;
-        links.forEach((link) => {
-            if (link.href.includes("pico.pumpkin.min.css")) {
-                link.href = link.href.replace("pico.pumpkin.min.css", `pico.${newTheme}.min.css`);
-            } else {
-                link.href = link.href.replace("pico.blue.min.css", `pico.${newTheme}.min.css`);
-            }
-        });
+        setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
     };
 
     return (
-        <button style={{display:"flex", alignItems:"center",justifyContent:"center", margin: 8}} onClick={toggleTheme}>
-            {currentTheme === "pumpkin" ? <IoInvertMode/> : <IoInvertModeOutline />}
-        </button>
+        <span onClick={toggleTheme} style={{cursor: "pointer", margin: "8px"}}>
+            {theme === 'light' ? <FaMoon size={30}/> : <FaSun color={"#eeeeee"} size={30}/>}
+        </span>
     );
-};
-
-export default ThemeToggler;
+}

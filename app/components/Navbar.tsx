@@ -60,11 +60,10 @@ function Navbar() {
                         <li>
                             <NavLink className={"navLink"} to={"./login"}>Login</NavLink>
                         </li>
-                        <li>
-                            <ThemeToggler/>
-                        </li>
                     </div>)}
                 </span>
+                <ThemeToggler/>
+
             </li>
 
         </nav>

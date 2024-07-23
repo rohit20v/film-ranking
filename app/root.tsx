@@ -6,6 +6,7 @@ import Navbar from "~/components/Navbar";
 export const links = () => [
     {rel: "stylesheet", href: "/pico.blue.min.css"}
 ];
+
 export function Layout({children}: { children: React.ReactNode }) {
     return (
         <html lang="en">
@@ -18,6 +19,7 @@ export function Layout({children}: { children: React.ReactNode }) {
         </head>
         <body>
         <Navbar/>
+        <hr/>
         {children}
         <ScrollRestoration/>
         <Scripts/>

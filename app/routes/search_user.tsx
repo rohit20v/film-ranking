@@ -42,7 +42,7 @@ const Search_user = () => {
 
     return (
         <>
-            <Form method={"POST"}>
+            <Form role={"search"} method={"POST"}>
                 <fieldset role={"group"}>
                     <input type={"text"} name={"username"} placeholder={"Search your friends!"}/>
                     <input type={"submit"} value={"Search user"} />
