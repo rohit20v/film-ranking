@@ -15,7 +15,6 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
 
     const hashedPW = await encrypt(password);
-    console.log("hash", hashedPW)
     try {
         const createdUser = await prisma.user.create({
             data: {
