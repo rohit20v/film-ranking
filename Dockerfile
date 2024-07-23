@@ -1,24 +1,16 @@
-FROM node:18-alpine AS base
+FROM node:20-bullseye-slim
 
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+RUN apt-get update && apt-get install -y openssl sqlite3
 
-FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+
+RUN node --version
+COPY package.json ./
+RUN npm install
+
 COPY . .
-RUN npm run build && npm cache clean --force
-RUN npx prisma migrate deploy
+RUN npx prisma generate
 
-FROM base AS runner
-WORKDIR /app
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 remix
-COPY --from=builder /app .
-USER remix
-EXPOSE 8081
-ENV PORT 8081
-CMD ["npm", "run", "start"]
+RUN npm run build
+
+CMD [ "npm", "run", "start" ]
