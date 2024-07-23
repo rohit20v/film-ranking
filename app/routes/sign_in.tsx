@@ -47,7 +47,6 @@ function Sign_in() {
     const actionData = useActionData<typeof action>();
     return (
         <>
-            <h1>Sign In</h1>
             <div className={"login-container"}>
                 <Form className={"form"} method="POST">
                     <label htmlFor={"mail"}>Enter an username</label>

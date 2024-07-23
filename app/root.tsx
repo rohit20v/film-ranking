@@ -19,7 +19,6 @@ export function Layout({children}: { children: React.ReactNode }) {
         </head>
         <body>
         <Navbar/>
-        <hr/>
         {children}
         <ScrollRestoration/>
         <Scripts/>

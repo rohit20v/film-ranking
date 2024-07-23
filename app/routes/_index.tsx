@@ -27,23 +27,21 @@ export default function Index() {
     return (
         <>
             <div className={"center"}>
-                <div className={"container"}>
-                    <h4>Top rated movies</h4>
-                    <ul>
-                        {
-                            movies?.map(({tconst, title, rating}) => {
-                                return (
-                                    <li key={tconst} style={{listStyleType: "none"}}>
-                                        <article>
-                                            <header>{title}</header>
-                                            <OnlyStar star={rating}/>
-                                        </article>
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
-                </div>
+                <strong>Top rated movies</strong>
+                <ul className={"homeContainer"}>
+                    {
+                        movies?.map(({tconst, title, rating}) => {
+                            return (
+                                <li key={tconst} style={{listStyleType: "none"}}>
+                                    <article>
+                                        <header>{title}</header>
+                                        <OnlyStar star={rating}/>
+                                    </article>
+                                </li>
+                            )
+                        })
+                    }
+                </ul>
             </div>
         </>
     );

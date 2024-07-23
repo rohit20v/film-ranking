@@ -40,7 +40,6 @@ function AddFilm() {
 
     return (
         <>
-            <p>Search a movie:</p>
             <search.Form action={"/films"} method="GET">
                 <input
                     type="text"

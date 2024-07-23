@@ -5,7 +5,7 @@ import {useRef, useState} from "react";
 function Navbar() {
     const menu = useRef()
     const [isMenuToggled, setIsMenuToggled] = useState(false);
-
+    const [nav, setNav] = useState(false);
     const toggleMenu = () => {
         if (menu.current) {
             menu.current.classList.toggle('ham-menu');
@@ -13,8 +13,18 @@ function Navbar() {
         }
     };
 
+    const changeNavColor = () => {
+        if (window.scrollY >= 80) {
+            setNav(true);
+        } else setNav(false)
+    }
+
+    if (typeof window !== 'undefined') {
+        window.addEventListener('scroll', changeNavColor)
+    }
+
     return (
-        <nav>
+        <nav className={nav ? "navbar active" : "navbar"}>
             <ul>
                 <li><a href="./" style={{marginLeft: "8px", textDecoration: "none"}}><strong
                     className={'title'}>CINEPHILIA!</strong></a></li>
