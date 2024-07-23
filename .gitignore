@@ -6,4 +6,3 @@ node_modules
 /prisma/dev.db
 /prisma/migrations
 /.idea
-/.idea
