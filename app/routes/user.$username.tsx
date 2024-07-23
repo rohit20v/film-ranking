@@ -95,17 +95,20 @@ const UserFilms = () => {
                     {userMovies?.length > 0 ? (
                         <>
                             {userMovies?.map((movie) => (
-                                <article
-                                    style={{maxWidth: "500px"}}
-                                    title={movie?.title}
-                                    key={movie?.id}
-                                >
-                                    <header>
-                                        <strong className={"movieName"}>{movie?.title}</strong>
-                                    </header>
-                                    <MoviePoster name={movie?.title} tconst={movie?.tconst}/>
-                                    <OnlyStar star={parseInt(movie?.rating)}/>
-                                </article>
+                                <div style={{display: "flex", flexDirection: "row"}}>
+                                    <article style={{maxWidth: "420px", textAlign: "center"}} title={movie.title}
+                                             key={movie.id}>
+                                        <header>
+                                            <strong className="movieName">{movie.title}</strong>
+                                        </header>
+                                        <MoviePoster name={movie.title} tconst={movie.tconst}/>
+                                        <footer>
+
+                                            <OnlyStar star={parseInt(movie.rating)}/>
+                                        </footer>
+                                    </article>
+                                </div>
+
                             ))}
                         </>
                     ) : (

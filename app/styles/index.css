@@ -18,14 +18,17 @@
     font-style: normal;
 }
 
-nav{
-    padding-top: 16px;
-    padding-inline: 8px;
+.center {
+    height: 100%;
+    width: 100%;
+    text-align: center;
 }
 
-.center {
+.homeContainer{
+    margin-top: 32px;
     display: flex;
-    height: 100%;
+    align-items: center;
+    gap: 32px;
     justify-content: center;
 }
 
@@ -150,6 +153,7 @@ nav{
     animation: fade-blur-in .2s ease-out;
     transition: .2s ease-in-out;
     cursor: pointer;
+    z-index: 111;
 }
 
 .suggestedMovies:hover {
@@ -157,6 +161,7 @@ nav{
 }
 
 .movie-list {
+    display: block;
     max-height: 269px;
     overflow: auto;
 }
@@ -174,6 +179,8 @@ nav{
     min-width: 100%
 
 }
+
+
 
 .poster{
     width: 50%;
