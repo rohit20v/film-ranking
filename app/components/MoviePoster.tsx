@@ -16,7 +16,7 @@ const MoviePoster = ({tconst, name}: { tconst: string, name: string }) => {
             {!poster?.data?.posterUrl ?
                 (<div aria-busy={true}></div>)
                 :
-                (<img alt={name + " poster"} src={poster?.data?.posterUrl} className={"poster"}/>)
+                (<img alt={name + " poster"} width={"42%"} src={poster?.data?.posterUrl} className={"poster"}/>)
             }
         </>
     );

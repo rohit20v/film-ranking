@@ -94,22 +94,23 @@ const UserFilms = () => {
                     <span style={{fontWeight: "bold", fontSize: 42}}> {username}</span>
                     {userMovies?.length > 0 ? (
                         <>
-                            {userMovies?.map((movie) => (
-                                <div style={{display: "flex", flexDirection: "row"}}>
-                                    <article style={{maxWidth: "420px", textAlign: "center"}} title={movie.title}
+                            <div className={'friendMovies'}>
+                                {userMovies?.map((movie) => (
+                                    <article style={{textAlign: "center"}} title={movie.title}
                                              key={movie.id}>
                                         <header>
                                             <strong className="movieName">{movie.title}</strong>
                                         </header>
-                                        <MoviePoster name={movie.title} tconst={movie.tconst}/>
+                                        <div>
+                                            <MoviePoster name={movie.title} tconst={movie.tconst}/>
+                                        </div>
                                         <footer>
-
                                             <OnlyStar star={parseInt(movie.rating)}/>
                                         </footer>
                                     </article>
-                                </div>
 
-                            ))}
+                                ))}
+                            </div>
                         </>
                     ) : (
                         <p>No movie found</p>
