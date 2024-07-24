@@ -26,11 +26,9 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     if (q) {
         const searchedMovies: searchedMovie[] = await searchMovie(q)
         return json({movies: null, searchedMovies, posterUrl: null})
-    } else {
-        if (tconst) {
-            const url = await getMoviePosterUrl(tconst);
-            return json({searchedMovies: null, movies: null, posterUrl: url,});
-        }
+    } else if (tconst) {
+        const url = await getMoviePosterUrl(tconst);
+        return json({searchedMovies: null, movies: null, posterUrl: url,});
     }
     return json({searchedMovies: null, movies: null, posterUrl: null,});
 };

@@ -25,24 +25,22 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 export default function Index() {
     const {movies} = useLoaderData<typeof loader>();
     return (
-        <>
-            <div className={"center"}>
-                <strong>Top rated movies</strong>
-                <ul className={"homeContainer"}>
-                    {
-                        movies?.map(({tconst, title, rating}) => {
-                            return (
-                                <li key={tconst} style={{listStyleType: "none"}}>
-                                    <article>
-                                        <header>{title}</header>
-                                        <OnlyStar star={rating}/>
-                                    </article>
-                                </li>
-                            )
-                        })
-                    }
-                </ul>
-            </div>
-        </>
+        <div className={"center"}>
+            <strong>Top rated movies</strong>
+            <ul className={"homeContainer"}>
+                {
+                    movies?.map(({tconst, title, rating}) => {
+                        return (
+                            <li key={tconst} style={{listStyleType: "none"}}>
+                                <article>
+                                    <header>{title}</header>
+                                    <OnlyStar star={rating}/>
+                                </article>
+                            </li>
+                        )
+                    })
+                }
+            </ul>
+        </div>
     );
 }

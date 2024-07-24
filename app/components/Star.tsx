@@ -1,8 +1,8 @@
 import {Form, useFetcher} from "@remix-run/react";
 import {useRef, useState} from "react";
 
-const Star = ({fill, onClick, state}: { fill: string, onClick?:() => void, state: string }) => {
-    return <>
+const Star = ({fill, onClick, state}: { fill: string, onClick?: () => void, state: string }) => {
+    return (
         <svg
             height="42px"
             width="42px"
@@ -10,7 +10,7 @@ const Star = ({fill, onClick, state}: { fill: string, onClick?:() => void, state
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             onClick={onClick}
-            style={{cursor : state}}
+            style={{cursor: state}}
         >
             <path
                 fill={fill}
@@ -24,7 +24,7 @@ const Star = ({fill, onClick, state}: { fill: string, onClick?:() => void, state
       C22.602,0.567,25.338,0.567,26.285,2.486z"
             />
         </svg>
-    </>
+    )
 };
 
 
@@ -36,7 +36,7 @@ export const OnlyStar = ({star, handleClick}: { star: number, handleClick?: (new
                 key={i}
                 fill={i < star ? 'yellow' : 'rgba(17,238,17,0)'}
                 onClick={() => handleClick?.(i + 1)}
-                state={handleClick? "pointer" : "default" }
+                state={handleClick ? "pointer" : "default"}
             />
         );
     }
@@ -56,7 +56,7 @@ const Rating = ({movieId, rating}: { movieId: number, rating: number }) => {
         formData.append('newRating', newRating.toString());
 
         try {
-            fetcher.submit(formData, { method: "post", action: "/films" });
+            fetcher.submit(formData, {method: "post", action: "/films"});
         } catch (error) {
             console.error('Error updating rating:', error);
         }
