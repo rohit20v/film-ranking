@@ -2,7 +2,7 @@ import process from "process";
 import {prisma} from "~/.server/db";
 
 export const getMovieTitle = async (tconst: string): Promise<string> => {
-    const res = await fetch("http://173.212.203.208:5555/tconst/" + tconst);
+    const res = await fetch("https://movies.lucailari.it/tconst/" + tconst);
     const movieData = await res.json();
     return movieData?.primaryTitle || " ";
 };
@@ -49,7 +49,7 @@ export const searchMovie = async (search: string): Promise<searchedMovie[]> => {
     const startTime = performance.now()
     try {
         console.log("Searching", search);
-        const res = await fetch(`http://173.212.203.208:5555/search/${search}`);
+        const res = await fetch(`https://movies.lucailari.it/search/${search}`);
         const searchedMovies = await res.json();
         if (searchedMovies?.err) {
             return []
