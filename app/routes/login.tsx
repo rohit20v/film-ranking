@@ -38,7 +38,6 @@ function Log_in() {
 
     return (
         <>
-            <h1>Login</h1>
             <div className={"login-container"}>
                 <Form className={"form"} method="POST">
                     <label htmlFor={"mail"}>Enter an username</label>

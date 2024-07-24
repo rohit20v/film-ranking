@@ -1,7 +1,7 @@
-import {Links, Meta, Outlet, Scripts, ScrollRestoration,} from "@remix-run/react";
+import {Links, Meta, Outlet, Scripts, ScrollRestoration} from "@remix-run/react";
 import "./styles/index.css";
 import Navbar from "~/components/Navbar";
-
+import {Footer} from "~/components/Footer";
 
 export const links = () => [
     {rel: "stylesheet", href: "/pico.blue.min.css"}
@@ -22,6 +22,10 @@ export function Layout({children}: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration/>
         <Scripts/>
+        <footer>
+            <hr/>
+            <Footer/>
+        </footer>
         </body>
         </html>
     );
@@ -29,8 +33,8 @@ export function Layout({children}: { children: React.ReactNode }) {
 
 export default function App() {
     return (
-        <div className={"container-fluid overflow-auto"}>
-
+        <div className="container-fluid overflow-auto">
             <Outlet/>
-        </div>)
+        </div>
+    );
 }

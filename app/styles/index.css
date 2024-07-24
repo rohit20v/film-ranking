@@ -24,6 +24,7 @@ footer {
 
 .footerLink {
     cursor: crosshair;
+    padding: 0
 }
 
 .footer {
@@ -55,6 +56,7 @@ footer {
     margin-top: 32px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 32px;
     justify-content: center;
 }
@@ -128,7 +130,7 @@ footer {
     animation: fadeIn 0.3s ease-in-out;
 }
 
-.friendMovies{
+.friendMovies {
     display: flex;
     justify-content: center;
     gap: 32px;
@@ -240,10 +242,12 @@ footer {
     transition: .2s ease;
     border-radius: 3px;
 }
-.themeToggler{
+
+.themeToggler {
     cursor: pointer;
     margin: 8px;
 }
+
 .poster:hover {
     scale: 1.2;
     box-shadow: 0 0 42px 6px black;
@@ -273,16 +277,22 @@ footer {
     .movieCard {
         max-width: 100%;
     }
+
     .menu-list {
         display: none;
     }
-    .title{
+
+    .title {
         font-size: medium;
     }
+
     .ham {
         display: flex;
         gap: 8px;
         align-items: center;
+    }
+    .homeContainer{
+        gap: 8px
     }
     .goTo {
         visibility: visible;
