@@ -9,9 +9,9 @@ export const Footer = () => {
                 <a style={{textDecoration: "none", display: "flex", gap: 8, alignItems: "center"}}
                    href="https://www.omdbapi.com/">
                     OMDB
-                    <p
-                        style={{fontSize: "small", marginTop: "25px"}}>for posters
-                    </p>
+                    <span
+                        style={{fontSize: "small", marginTop: "2px"}}>for posters
+                    </span>
                 </a>
             </p>
         </div>

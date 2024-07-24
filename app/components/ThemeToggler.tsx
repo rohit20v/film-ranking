@@ -26,7 +26,7 @@ export default function ThemeToggler() {
 
     return (
         <span onClick={toggleTheme} className={'themeToggler'}>
-      {theme === 'light' ? <FaMoon size={30}/> : <FaSun color={"#eeeeee"} size={30}/>}
+      {theme === 'light' ? <FaMoon size={28}/> : <FaSun color={"#eeeeee"} size={28}/>}
     </span>
     );
 }

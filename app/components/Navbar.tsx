@@ -1,6 +1,7 @@
 import {NavLink} from "@remix-run/react";
 import ThemeToggler from "~/components/ThemeToggler";
 import {useRef, useState} from "react";
+import {RxHamburgerMenu} from "react-icons/rx";
 
 function Navbar() {
     const menu = useRef()
@@ -52,7 +53,7 @@ function Navbar() {
             <li className={'ham'}>
                 <span onClick={toggleMenu} ref={menu}>
                 <span hidden={isMenuToggled}>
-                    MENU
+                    <RxHamburgerMenu size={28} />
                 </span>
                     {isMenuToggled && (<ul className={'ham-menu'}>
                         <li>
