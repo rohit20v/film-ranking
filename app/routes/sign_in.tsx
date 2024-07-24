@@ -68,7 +68,7 @@ function Sign_in() {
                         required
                     />
                     <p style={{fontSize: 16}}>Already have an account? <Link to={'/login'}>Go to login</Link></p>
-                    <button type="submit">Login</button>
+                    <button type="submit">Sign In!</button>
                     <div className="status">{actionData && <p>{actionData.err}</p>}</div>
                 </Form>
             </div>
