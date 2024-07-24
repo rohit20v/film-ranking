@@ -91,7 +91,11 @@ const UserFilms = () => {
                             <button type={"submit"}>Add friend</button>
                         </Form>
                     )}
-                    <span style={{fontWeight: "bold", fontSize: 42}}> {username}</span>
+                    <span style={{fontWeight: "bold", fontSize: 42}}>
+                        <span className={'friendName'}>
+                            {username}
+                        </span>
+                    </span>
                     {userMovies?.length > 0 ? (
 
                         <div className={'friendMovies'}>
