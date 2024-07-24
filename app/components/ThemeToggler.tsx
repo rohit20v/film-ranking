@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import {FaMoon, FaSun} from "react-icons/fa";
 
-
 export default function ThemeToggler() {
     const [theme, setTheme] = useState('dark');
 
@@ -26,8 +25,8 @@ export default function ThemeToggler() {
     };
 
     return (
-        <span onClick={toggleTheme} style={{cursor: "pointer", margin: "8px"}}>
-            {theme === 'light' ? <FaMoon size={30}/> : <FaSun color={"#eeeeee"} size={30}/>}
-        </span>
+        <span onClick={toggleTheme} className={'themeToggler'}>
+      {theme === 'light' ? <FaMoon size={30}/> : <FaSun color={"#eeeeee"} size={30}/>}
+    </span>
     );
 }

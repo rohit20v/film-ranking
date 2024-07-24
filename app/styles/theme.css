@@ -3,7 +3,6 @@
     --color: #13171f;
 }
 
-
 [data-theme="dark"] {
     --background: #13171f;
     --color: #f8f8f8;
@@ -17,24 +16,3 @@ html {
 }
 
 
-.navbar{
-    padding-top: 8px;
-    padding-inline: 8px;
-    position: sticky;
-    top: 0;
-    background-color: transparent;
-    transition: 0.2s ease-in-out;
-    margin-bottom: 69px
-}
-
-.navbar.active{
-    border-bottom-left-radius: 32px;
-    border-bottom-right-radius: 32px;
-    margin-inline: 42px;
-    background: var(--background);
-    color: var(--color);
-    padding: 8px;
-    border-bottom: solid #007acc;
-    transition: 0.2s ease-in-out;
-    z-index: 11111
-}

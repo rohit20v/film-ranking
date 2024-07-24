@@ -54,7 +54,7 @@ function Navbar() {
                 <span hidden={isMenuToggled}>
                     MENU
                 </span>
-                    {isMenuToggled && (<div className={'ham-menu'}>
+                    {isMenuToggled && (<ul className={'ham-menu'}>
                         <li>
                             <NavLink className={"navLink"} to={"./"}>Home</NavLink>
                         </li>
@@ -70,7 +70,7 @@ function Navbar() {
                         <li>
                             <NavLink className={"navLink"} to={"./login"}>Login</NavLink>
                         </li>
-                    </div>)}
+                    </ul>)}
                 </span>
                 <ThemeToggler/>
 
