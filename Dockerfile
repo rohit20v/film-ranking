@@ -10,12 +10,13 @@ RUN node --version
 COPY package.json ./
 RUN npm install
 
-COPY app .
-COPY prisma .
-COPY public .
-COPY postcss.config.js .
-COPY tsconfig.json .
-COPY vite.config.ts .
+COPY app ./app
+COPY prisma ./prisma
+COPY public ./public
+COPY postcss.config.js ./
+COPY tsconfig.json ./
+COPY vite.config.ts ./
+RUN ls -la
 
 RUN npx prisma generate
 
