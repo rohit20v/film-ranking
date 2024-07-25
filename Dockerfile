@@ -1,7 +1,7 @@
 FROM node:20-bullseye-slim
 
 RUN apt-get update \
-    && apt-get install -y openssl sqlite3 \
+    && apt-get --no-install-recommends install -y openssl sqlite3 \
     && apt-get clean
 
 WORKDIR /app
