@@ -59,7 +59,7 @@ export const action = async ({request, params}: ActionFunctionArgs) => {
         return json({err: "User not found"});
     }
     try {
-        const added = await prisma.user.update({
+        await prisma.user.update({
             where: {
                 username: user,
             },

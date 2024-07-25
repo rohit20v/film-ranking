@@ -157,7 +157,7 @@ footer {
 }
 .friendName:hover {
     color: #fff;
-    box-shadow: inset 200px 0 0 0 #7c85e8;;
+    box-shadow: inset 200px 0 0 0 #7c85e8;
 }
 .movieName {
     color: var(--underline-color);
