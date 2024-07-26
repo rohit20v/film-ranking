@@ -1,40 +1,52 @@
-# Welcome to Remix!
+# Film Ranking 🎬
 
-- 📖 [Remix docs](https://remix.run/docs)
+**Film Ranking** is a web application built with Remix, Prisma, SQLite, and PicoCSS, all written in TypeScript. The platform allows users to share their favorite movies online and explore movies added by others. 
 
-## Development
+## Features ✨
 
-Run the dev server:
+- **User Accounts**: Users can create accounts, log in, and manage their profiles. 🧑‍🤝‍🧑
+- **Movie Sharing**: Users can add movies to their profile and share their favorite films with others. 🍿
+- **Social Interaction**: Users can search for other users by username, view the movies they have added, and manage their list of friends. 🔍
+- **Movie Posters**: Integrated with OMDB API to fetch movie posters. 🎥
+- **Custom APIs**: Utilizes custom APIs for various functionalities. ⚙️
 
-```shellscript
-npm run dev
-```
+## Installation ⚡
 
-## Deployment
+To set up the project locally, follow these steps:
 
-First, build your app for production:
+1. **Clone the Repository**:
+    ```bash
+    https://github.com/rohit20v/film-ranking.git
+    cd film-ranking
+    ```
 
-```sh
-npm run build
-```
+2. **Install Dependencies**:
+    ```bash
+    npm install
+    ```
 
-Then run the app in production mode:
+3. **Setup the Database**:
+    ```bash
+    npx prisma migrate dev --name init
+    ```
 
-```sh
-npm start
-```
+4. **Start the Application**:
+    ```bash
+    npm run dev
+    ```
 
-Now you'll need to pick a host to deploy it to.
+    The application will be available at [http://localhost:3000](http://localhost:3000). 🌐
 
-### DIY
+## Usage 🚀
 
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
+1. **Create an Account**: Register a new account on the platform. 📝
+2. **Log In**: Use your credentials to log in. 🔑
+3. **Add Movies**: Add your favorite movies and share them with other users. 🎞️
+4. **Search and Follow**: Find other users by username and view their movie lists. 🔎
+5. **Manage Friends**: Add or remove friends from your list. ✨
 
-Make sure to deploy the output of `npm run build`
 
-- `build/server`
-- `build/client`
 
-## Styling
+---
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+Thank you for checking out **Film Ranking**! We hope you enjoy using it as much as we enjoyed building it. 😃
