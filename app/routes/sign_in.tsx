@@ -32,13 +32,13 @@ export const action = async ({request}: ActionFunctionArgs) => {
                 "Set-Cookie": await commitSession(session),
             },
         });
-    } catch (Error) {
-        if (Error instanceof Prisma.PrismaClientKnownRequestError) {
-            if (Error.code === "P2002") {
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code === "P2002") {
                 return json({err: "Error username already taken"});
             }
         }
-        console.log("e",Error)
+        console.log("e",e)
         return json({err: "Error creating user"});
     }
 };

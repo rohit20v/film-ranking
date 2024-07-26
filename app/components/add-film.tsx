@@ -57,8 +57,7 @@ function AddFilm() {
                 )}
             </search.Form>
             <ul className={'movie-list'}>
-                {search.data &&
-                    search.data?.searchedMovies?.map((movie) => (
+                {search.data?.searchedMovies?.map((movie) => (
                             <li className={'suggestedMovies'}
                                 onClick={() => addMovie(movie?.tconst)}
                                 key={movie?.tconst}
