@@ -1,13 +1,15 @@
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
-import {Form, useFetcher, useLoaderData} from "@remix-run/react";
+import {useFetcher, useLoaderData} from "@remix-run/react";
 import AddFilm from "~/components/add-film";
 import Rating from "~/components/Star";
 import {
     addFilm,
     getMoviePosterUrl,
-    getUserMovies, removeMovie,
+    getUserMovies,
+    removeMovie,
     searchedMovie,
-    searchMovie, updateMovieRating
+    searchMovie,
+    updateMovieRating
 } from "~/.server/functions";
 import MoviePoster from "~/components/MoviePoster";
 import {checkLogin} from "~/.server/auth";
@@ -119,7 +121,7 @@ function Films() {
                                 key={movie.id}
                             >
                                 <header>
-                                    <Form
+                                    <div
                                         style={{display: "flex", justifyContent: "space-between"}}
                                     >
                                         <strong className="movieName">{movie.title}</strong>
@@ -129,7 +131,7 @@ function Films() {
                                         >
                                             Remove
                                         </p>
-                                    </Form>
+                                    </div>
                                 </header>
                                 <MoviePoster name={movie.title} tconst={movie.tconst}/>
                                 <footer>

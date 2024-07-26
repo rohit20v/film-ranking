@@ -146,6 +146,7 @@ footer {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 16px;
     gap: 32px;
 }
 .friendName{
