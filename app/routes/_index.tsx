@@ -1,4 +1,4 @@
-import {json, LoaderFunctionArgs} from "@remix-run/node";
+import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/node";
 import {useLoaderData} from "@remix-run/react";
 import {prisma} from "~/.server/db";
 import {OnlyStar} from "~/components/Star";
