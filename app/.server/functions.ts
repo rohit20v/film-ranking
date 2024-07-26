@@ -12,8 +12,7 @@ export const getMoviePosterUrl = async (tconst: string): Promise<string> => {
         `https://www.omdbapi.com/?i=${tconst}&apikey=${process.env.OMDB_KEY}`
     );
     const moviePosterData = await response.json();
-    const url = moviePosterData?.Poster || "No poster found";
-    return url;
+    return moviePosterData?.Poster || "No poster found";
 };
 
 export type searchedMovie = {
@@ -106,7 +105,7 @@ const checkUserHasMovie = async (user: string, movieId: number): Promise<boolean
 
 export const updateMovieRating = async (movieId: number, newRating: number, user: string) => {
     const movieOwner = await checkUserHasMovie(user, movieId)
-    if (!movieOwner){
+    if (!movieOwner) {
         return {err: "Movie not created by the user"}
     }
     try {
@@ -123,7 +122,7 @@ export const updateMovieRating = async (movieId: number, newRating: number, user
 
 export const removeMovie = async (movieId: number, user: string) => {
     const movieOwner = await checkUserHasMovie(user, movieId)
-    if (!movieOwner){
+    if (!movieOwner) {
         return {err: "Movie not created by the user"}
     }
     try {
@@ -133,5 +132,23 @@ export const removeMovie = async (movieId: number, user: string) => {
         return {err: null};
     } catch (err) {
         return {err: "Error removing movie"};
+    }
+}
+
+export const removeFriend = async (formData: FormData)=> {
+    const friendToRemove = formData.get("friendToRemove");
+    const currentUser = formData.get("currentUser");
+
+    if (typeof friendToRemove === "string" && typeof currentUser === "string") {
+
+        const removeFriend = await prisma.user_friends.delete({
+            where: {
+                user_id_friend_id: {
+                    friend_id: parseInt(friendToRemove),
+                    user_id: parseInt(currentUser),
+                }
+            },
+        });
+        return {data: "You've unfriended this user successfully"}
     }
 }
