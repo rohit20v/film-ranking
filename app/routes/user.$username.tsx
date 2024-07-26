@@ -9,7 +9,6 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const sessionUser = await checkLogin(request)
 
     let showAddFriendButton = true;
-    //TODO: remove friend
     const userSearched = params.username;
     if (
         !sessionUser ||
