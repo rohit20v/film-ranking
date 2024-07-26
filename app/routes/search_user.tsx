@@ -66,12 +66,12 @@ const Search_user = () => {
                 </fieldset>
             </Form>
             <span style={{margin: 16, fontSize: "x-large"}}>Friends list:</span>
-            <ul style={{marginInline: 32, paddingBlock: 16, overflowY: "scroll"}}>
+            <ul className="friendListContainer">
                 {friends?.map((x) => (
                     <li key={x?.friend?.username}>
                         <div style={{display: "flex", gap: 16, alignItems: "center"}}>
                             <span>☼</span>
-                            <div style={{width: "16%", display: "flex", justifyContent: "space-between"}}>
+                            <div className={'friendList'}>
                                 <Link style={{textDecoration: "none"}}
                                       to={"/user/" + x?.friend.username}>{x?.friend?.username}</Link>
                                 <MdPersonRemove cursor={"pointer"}

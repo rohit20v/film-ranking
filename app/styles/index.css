@@ -160,6 +160,22 @@ footer {
     color: #fff;
     box-shadow: inset 200px 0 0 0 #7c85e8;
 }
+.friendListContainer{
+    margin-inline: 32px;
+    padding-block: 16px;
+    overflow-y: scroll;
+}
+.friendListContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.friendList{
+    width: 16%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: .2s ease-in-out;
+}
 .movieName {
     color: var(--underline-color);
     filter: brightness(100%);
@@ -326,10 +342,18 @@ footer {
         gap: 8px;
         align-items: center;
     }
+
     .homeContainer{
         gap: 8px
     }
+
     .goTo {
         visibility: visible;
+    }
+
+    .friendList{
+        width: 100%;
+        align-items: flex-start;
+        flex-wrap: wrap;
     }
 }
