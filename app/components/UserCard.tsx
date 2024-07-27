@@ -19,7 +19,7 @@ const UserCard = ({src, username, }: { src: string, username: string, }) => {
                         <div className="pfp-container">
                             <img className="pfp" src={src} alt={`${src} avatar`}/>
                         </div>
-                        <form method="POST" action="/app/routes/profile" encType="multipart/form-data">
+                        <form method="POST" action="/profile" encType="multipart/form-data">
                             <input type="file" id="myFile" name="filename"/>
                             <input type="submit" value="Update profile pic"/>
                         </form>
