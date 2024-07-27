@@ -9,14 +9,24 @@ import fs from "fs";
 import {checkLogin} from "~/.server/auth";
 import {useLoaderData} from "@remix-run/react";
 import UserCard from "~/components/UserCard";
+import {deleteAccount, getUserMovies} from "~/.server/functions";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const username = await checkLogin(request);
-    return json({avatar: "/avatar/" + username, username}, {headers: {'Cache-Control': 'no-cache'}});
+    const movies = await getUserMovies(username)
+
+    return json({avatar: "/avatar/" + username, username, movies}, {headers: {'Cache-Control': 'no-cache'}});
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {
     const username = await checkLogin(request);
+
+    const formData = await request.formData();
+    const formType = formData.get("formType");
+
+    if (formType === 'deleteAccount') {
+        return await deleteAccount(formData);
+    }
 
     const fileUp = unstable_createFileUploadHandler();
     const formDataFile = await unstable_parseMultipartFormData(request, fileUp);
@@ -40,10 +50,10 @@ export const action = async ({request}: ActionFunctionArgs) => {
 }
 
 const FileUpload = () => {
-    const {avatar, username } = useLoaderData<typeof loader>()
+    const {avatar, username, movies } = useLoaderData<typeof loader>()
     return (
         <>
-            <UserCard src={avatar} username={username} />
+            <UserCard src={avatar} username={username} userMovies={movies.length} />
         </>
     )
 }

@@ -1,13 +1,14 @@
 import '../styles/deleteBtn.css'
+import {useFetcher} from "@remix-run/react";
 
-const UserCard = ({src, username, }: { src: string, username: string, }) => {
-    // const fetcher = useFetcher()
-    // const deleteAccount = () => {
-    //     const formData = new FormData();
-    //     formData.append('formType', 'deleteAccount');
-    //     formData.append('username', username)
-    //     fetcher.submit(formData, {method: "POST", action: "/profile"});
-    // };
+const UserCard = ({src, username, userMovies}: { src: string, username: string, userMovies: number}) => {
+    const fetcher = useFetcher()
+    const deleteAccount = () => {
+        const formData = new FormData();
+        formData.append('formType', 'deleteAccount');
+        formData.append('username', username)
+        fetcher.submit(formData, {method: "POST", action: "/profile"});
+    };
     return (
         <>
             <h1 style={{textAlign: "center"}}>
@@ -24,11 +25,11 @@ const UserCard = ({src, username, }: { src: string, username: string, }) => {
                             <input type="submit" value="Update profile pic"/>
                         </form>
                     </header>
-                    <p style={{textAlign: "center"}}>You have added 5 so far!</p>
+                    <p style={{textAlign: "center"}}>You have added {userMovies} so far!</p>
                     <footer style={{display: 'flex', justifyContent: 'center'}}>
                         <span data-tooltip="You'll lose your acccount once clicked this button"
                               data-placement="top">
-                            <button style={{backgroundColor: " #e62222"}} className="noselect">
+                            <button onClick={deleteAccount} style={{backgroundColor: " #e62222"}} className="delBtn">
                                 <span className="text">Delete</span>
                                 <span className="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

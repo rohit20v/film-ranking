@@ -1,4 +1,4 @@
-button {
+.delBtn {
     width: 150px;
     height: 50px;
     cursor: pointer;
@@ -13,17 +13,17 @@ button {
     overflow: hidden;
 }
 
-button, button span {
+.delBtn, .delBtn span {
     transition: 200ms;
 }
 
-button .text {
+.delBtn .text {
     color: white;
     font-weight: bold;
     transition: opacity 200ms;
 }
 
-button .icon {
+.delBtn .icon {
     position: absolute;
     right: 0;
     top: 0;
@@ -37,7 +37,7 @@ button .icon {
     transition: width 200ms, background 200ms;
 }
 
-button .icon svg {
+.delBtn .icon svg {
     width: 42px;
     height: 42px;
     fill: #eee;
@@ -45,24 +45,24 @@ button .icon svg {
     padding: 8px;
 }
 
-button:hover {
+.delBtn:hover {
     background: #ff3636;
     border-color: #ff0000;
 }
 
-button:hover .text {
+.delBtn:hover .text {
     opacity: 0;
 }
 
-button:hover .icon {
+.delBtn:hover .icon {
     width: 100%;
 }
 
-button:focus {
+.delBtn:focus {
     outline: none;
     border-color: #ff0000;
 }
 
-button:active .icon svg {
+.delBtn:active .icon svg {
     transform: scale(0.8);
 }
