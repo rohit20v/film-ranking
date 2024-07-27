@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import {getSession} from "~/session";
 import {redirect} from "@remix-run/react";
 import {prisma} from "~/.server/db";
