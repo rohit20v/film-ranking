@@ -152,3 +152,16 @@ export const removeFriend = async (formData: FormData)=> {
         return {data: "You've unfriended this user successfully"}
     }
 }
+
+export const deleteAccount = async (formData: FormData)=> {
+    const username = formData.get("username");
+
+    if (typeof username === "string") {
+        const deleteAccount = await prisma.user.delete({
+            where: {
+               username
+            },
+        });
+        return {data: deleteAccount}
+    }
+}
