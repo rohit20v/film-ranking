@@ -15,9 +15,7 @@ function Navbar({user}: { user?: string }) {
     };
 
     const changeNavColor = () => {
-        if (window.scrollY >= 80) {
-            setNav(true);
-        } else setNav(false)
+        setNav(window.scrollY >= 80);
     }
 
     if (typeof window !== 'undefined') {
@@ -52,7 +50,7 @@ function Navbar({user}: { user?: string }) {
                     <li>
                         <NavLink className={"navLink"} to={"./file_upload"}>
                             <div className={'avatar-container'}>
-                            <img alt={user} className={'avatar'} src={"/avatar/" + user}/>
+                                <img alt={user} className={'avatar'} src={"/avatar/" + user}/>
 
                             </div>
                         </NavLink>
