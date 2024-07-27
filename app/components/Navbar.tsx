@@ -40,16 +40,26 @@ function Navbar({user}: { user: string }) {
                 <li>
                     <NavLink className={"navLink"} to={"./search_user"}>Search user</NavLink>
                 </li>
-                <li>
-                    <NavLink className={"navLink"} to={"./sign_in"}>Sign In</NavLink>
-                </li>
-                <li>
-                    <NavLink className={"navLink"} to={"./login"}>Login</NavLink>
-                </li>
+                {!user ?
+                    <>
+                        <li>
+                            <NavLink className={"navLink"} to={"./sign_in"}>Sign up</NavLink>
+                        </li>
+                        <li>
+                            <NavLink className={"navLink"} to={"./login"}>Login</NavLink>
+                        </li>
+                    </> :
+                    <li>
+                        <NavLink className={"navLink"} to={"./file_upload"}>
+                            <div className={'avatar-container'}>
+                            <img alt={user} className={'avatar'} src={"/avatar/" + user}/>
+
+                            </div>
+                        </NavLink>
+                    </li>
+                }
                 <li>
                     <ThemeToggler/>
-                    <p>{user}</p>
-                    {/*Just testing*/}
                 </li>
             </ul>
             <li className={'ham'}>
@@ -67,12 +77,20 @@ function Navbar({user}: { user: string }) {
                         <li>
                             <NavLink className={"navLink"} to={"./search_user"}>Search user</NavLink>
                         </li>
-                        <li>
-                            <NavLink className={"navLink"} to={"./sign_in"}>Sign In</NavLink>
-                        </li>
-                        <li>
-                            <NavLink className={"navLink"} to={"./login"}>Login</NavLink>
-                        </li>
+                        {!user ?
+                            <>
+                                <li>
+                                    <NavLink className={"navLink"} to={"./sign_in"}>Sign up</NavLink>
+                                </li>
+                                <li>
+                                    <NavLink className={"navLink"} to={"./login"}>Login</NavLink>
+                                </li>
+                            </>
+                            :
+                            <li>
+                                <NavLink className={"navLink"} to={"./file_upload"}>Profile</NavLink>
+                            </li>
+                        }
                     </ul>)}
                 </span>
                 <ThemeToggler/>

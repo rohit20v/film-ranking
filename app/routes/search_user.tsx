@@ -70,7 +70,7 @@ const Search_user = () => {
                 {friends?.map((x) => (
                     <li key={x?.friend?.username}>
                         <div style={{display: "flex", gap: 16, alignItems: "center"}}>
-                            <span>☼</span>
+                            <span style={{marginBottom: 8}}>☼</span>
                             <div className={'friendList'}>
                                 <Link style={{textDecoration: "none"}}
                                       to={"/user/" + x?.friend.username}>{x?.friend?.username}</Link>

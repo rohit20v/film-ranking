@@ -107,6 +107,67 @@ footer {
     transition: 0.2s ease-in-out;
 }
 
+
+.userCardContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+.userCard {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pfp-container {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pfp {
+    outline: solid 2px var(--underline-color);
+    border: solid 2px transparent;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.avatar-container {
+    width: 50px;
+    height: 50px;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .ham {
     display: none;
 }
@@ -204,8 +265,7 @@ footer {
     visibility: hidden;
     text-decoration: none;
     font-size: medium;
-    opacity: .5;
-    color: white;
+    opacity: .6;
     transition: .2s ease;
 }
 
@@ -221,6 +281,7 @@ footer {
     -webkit-backdrop-filter: blur(6.4px);
     border: 1px solid var(--underline-color);
 }
+
 
 .status {
     background-color: var(--underline-color);
@@ -304,6 +365,14 @@ footer {
     }
 }
 
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -346,14 +415,31 @@ footer {
     .homeContainer{
         gap: 8px
     }
-
-    .goTo {
-        visibility: visible;
+    .avatar{
+        display: none
     }
-
     .friendList{
         width: 100%;
         align-items: flex-start;
         flex-wrap: wrap;
+    }
+    .avatar-container {
+        width: 80px;
+        height: 80px;
+    }
+
+    .pfp {
+        width: 80px;
+        height: 80px;
+    }
+
+    .userCard {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 766px) {
+    .goTo{
+        visibility: visible;
     }
 }
