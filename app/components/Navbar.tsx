@@ -3,7 +3,7 @@ import ThemeToggler from "~/components/ThemeToggler";
 import {useRef, useState} from "react";
 import {RxHamburgerMenu} from "react-icons/rx";
 
-function Navbar() {
+function Navbar({user}: { user: string }) {
     const menu = useRef()
     const [isMenuToggled, setIsMenuToggled] = useState(false);
     const [nav, setNav] = useState(false);
@@ -48,12 +48,14 @@ function Navbar() {
                 </li>
                 <li>
                     <ThemeToggler/>
+                    <p>{user}</p>
+                    {/*Just testing*/}
                 </li>
             </ul>
             <li className={'ham'}>
                 <span onClick={toggleMenu} ref={menu}>
                 <span hidden={isMenuToggled}>
-                    <RxHamburgerMenu size={28} />
+                    <RxHamburgerMenu size={28}/>
                 </span>
                     {isMenuToggled && (<ul className={'ham-menu'}>
                         <li>
@@ -74,7 +76,6 @@ function Navbar() {
                     </ul>)}
                 </span>
                 <ThemeToggler/>
-
             </li>
 
         </nav>

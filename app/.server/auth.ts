@@ -12,9 +12,13 @@ export const comparePassword = async (inputPassword: string, storedEncryptedPass
     return await bcrypt.compare(inputPassword, storedEncryptedPassword);
 }
 
-export const checkLogin = async (request: Request): Promise<string> => {
+export const getUserFromCookies = async (request: Request): Promise<string> => {
     const session = await getSession(request.headers.get("cookie"));
-    const cookieUser = session.data.user;
+    return session.data.user;
+}
+
+export const checkLogin = async (request: Request): Promise<string> => {
+    const cookieUser = await getUserFromCookies(request);
     if (!cookieUser) {
         //verify if the user has cookie
         throw redirect("/login")

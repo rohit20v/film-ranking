@@ -1,13 +1,20 @@
-import {Links, Meta, Outlet, Scripts, ScrollRestoration} from "@remix-run/react";
+import {Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData} from "@remix-run/react";
 import "./styles/index.css";
 import Navbar from "~/components/Navbar";
 import {Footer} from "~/components/Footer";
+import {getUserFromCookies} from "~/.server/auth";
+import {LoaderFunctionArgs} from "@remix-run/node";
 
 export const links = () => [
     {rel: "stylesheet", href: "/pico.blue.min.css"}
 ];
+export const loader = async ({request}: LoaderFunctionArgs) => {
+    const user = await getUserFromCookies(request)
+    return {user: user}
+}
 
 export function Layout({children}: { children: React.ReactNode }) {
+    const {user} = useLoaderData<typeof loader>()
     return (
         <html lang="en">
         <head>
@@ -18,7 +25,7 @@ export function Layout({children}: { children: React.ReactNode }) {
             <Links/>
         </head>
         <body>
-        <Navbar/>
+        <Navbar user={user}/>
         {children}
         <ScrollRestoration/>
         <Scripts/>
