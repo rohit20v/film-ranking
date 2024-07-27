@@ -8,10 +8,11 @@ import {
 import fs from "fs";
 import {checkLogin} from "~/.server/auth";
 import {useLoaderData} from "@remix-run/react";
+import UserCard from "~/components/UserCard";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const username = await checkLogin(request);
-    return json({avatar: "/avatar/" + username}, {headers: {'Cache-Control': 'no-cache'}});
+    return json({avatar: "/avatar/" + username, username}, {headers: {'Cache-Control': 'no-cache'}});
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -39,15 +40,10 @@ export const action = async ({request}: ActionFunctionArgs) => {
 }
 
 const FileUpload = () => {
-    const {avatar} = useLoaderData<typeof loader>()
+    const {avatar, username } = useLoaderData<typeof loader>()
     return (
         <>
-            <p>Upload your avatar</p>
-            <form method="POST" encType="multipart/form-data">
-                <input type="file" id="myFile" name="filename"/>
-                <input type="submit"/>
-            </form>
-            <img src={avatar} alt={avatar}/>
+            <UserCard src={avatar} username={username} />
         </>
     )
 }
