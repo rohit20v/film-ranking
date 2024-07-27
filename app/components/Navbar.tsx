@@ -3,7 +3,7 @@ import ThemeToggler from "~/components/ThemeToggler";
 import {useRef, useState} from "react";
 import {RxHamburgerMenu} from "react-icons/rx";
 
-function Navbar({user}: { user: string }) {
+function Navbar({user}: { user?: string }) {
     const menu = useRef()
     const [isMenuToggled, setIsMenuToggled] = useState(false);
     const [nav, setNav] = useState(false);
