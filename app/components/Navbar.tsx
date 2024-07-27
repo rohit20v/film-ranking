@@ -48,7 +48,7 @@ function Navbar({user}: { user?: string }) {
                         </li>
                     </> :
                     <li>
-                        <NavLink className={"navLink"} to={"./file_upload"}>
+                        <NavLink className={"navLink"} to={"./profile"}>
                             <div className={'avatar-container'}>
                                 <img alt={user} className={'avatar'} src={"/avatar/" + user}/>
 
@@ -86,7 +86,7 @@ function Navbar({user}: { user?: string }) {
                             </>
                             :
                             <li>
-                                <NavLink className={"navLink"} to={"./file_upload"}>Profile</NavLink>
+                                <NavLink className={"navLink"} to={"./profile"}>Profile</NavLink>
                             </li>
                         }
                     </ul>)}
