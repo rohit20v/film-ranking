@@ -14,7 +14,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 }
 
 export function Layout({children}: { children: React.ReactNode }) {
-    const {user} = useLoaderData<typeof loader>()
+    const data= useLoaderData<typeof loader>()
     return (
         <html lang="en">
         <head>
@@ -25,7 +25,7 @@ export function Layout({children}: { children: React.ReactNode }) {
             <Links/>
         </head>
         <body>
-        <Navbar user={user}/>
+        <Navbar user={data?.user}/>
         {children}
         <ScrollRestoration/>
         <Scripts/>
