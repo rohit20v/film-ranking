@@ -11,7 +11,7 @@ import {useLoaderData} from "@remix-run/react";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
     const username = await checkLogin(request);
-    return json({avatar: "/uavatar/" + username + ".jpg"});
+    return json({avatar: "/avatar/" + username}, {headers: {'Cache-Control': 'no-cache'}});
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -35,8 +35,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
         if (err) throw err;
         console.log(username, "uploaded avatar");
     });
-
-    return json({err: "Upload Done"})
+    return json({err: "Upload Done"}, {headers: {"Cache-Control": "no-cache"}});
 }
 
 const FileUpload = () => {
