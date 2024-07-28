@@ -72,8 +72,12 @@ const Search_user = () => {
                         <div style={{display: "flex", gap: 16, alignItems: "center"}}>
                             <span style={{marginBottom: 8}}>☼</span>
                             <div className={'friendList'}>
-                                <Link style={{textDecoration: "none"}}
-                                      to={"/user/" + x?.friend.username}>{x?.friend?.username}</Link>
+                                <div style={{display: "flex", gap: 16, alignItems: "center", justifyContent: "center"}}>
+                                    <img style={{borderRadius: "50%"}} width={50} src={`/avatar/${x.friend.username}`}
+                                         alt=""/>
+                                    <Link style={{textDecoration: "none"}}
+                                          to={"/user/" + x?.friend.username}>{x?.friend?.username}</Link>
+                                </div>
                                 <MdPersonRemove cursor={"pointer"}
                                                 onClick={() => removeFriend(String(x?.friend_id), String(x?.user_id))}
                                                 size={32}
