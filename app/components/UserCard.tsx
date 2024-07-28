@@ -22,6 +22,7 @@ const UserCard = ({src, username, userMovies}: { src: string, username: string, 
                         <div className="pfp-container">
                             <img className="pfp" src={src} alt={`${src} avatar`}/>
                         </div>
+                        <p>{err}</p>
                         <form method="POST" action="/profile" encType="multipart/form-data">
                             <input type="file" id="myFile" name="filename"/>
                             <input type="submit" value="Update profile pic"/>

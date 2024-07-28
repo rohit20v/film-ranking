@@ -47,7 +47,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
     const formType = formDataFile.get("formType");
 
     if (formType === 'deleteAccount') {
-        return await deleteAccount(username);
+        return json({err: null, data: await deleteAccount(username)})
     }
 
     const uploaded = formDataFile.get("filename")
@@ -103,9 +103,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
 const FileUpload = () => {
     const {avatar, username, movies} = useLoaderData<typeof loader>()
     return (
-        <>
-            <UserCard src={avatar} username={username} userMovies={movies.length}/>
-        </>
+        <UserCard src={avatar} username={username} userMovies={movies.length}/>
     )
 }
 export default FileUpload;
