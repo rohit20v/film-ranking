@@ -135,7 +135,7 @@ export const removeMovie = async (movieId: number, user: string) => {
     }
 }
 
-export const removeFriend = async (formData: FormData)=> {
+export const removeFriend = async (formData: FormData) => {
     const friendToRemove = formData.get("friendToRemove");
     const currentUser = formData.get("currentUser");
 
@@ -153,15 +153,11 @@ export const removeFriend = async (formData: FormData)=> {
     }
 }
 
-export const deleteAccount = async (formData: FormData)=> {
-    const username = formData.get("username");
-
-    if (typeof username === "string") {
-        const deleteAccount = await prisma.user.delete({
-            where: {
-               username
-            },
-        });
-        return {data: deleteAccount}
-    }
+export const deleteAccount = async (username: string) => {
+    const deleteAccount = await prisma.user.delete({
+        where: {
+            username
+        },
+    });
+    return {data: deleteAccount}
 }

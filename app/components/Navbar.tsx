@@ -51,7 +51,6 @@ function Navbar({user}: { user?: string }) {
                         <NavLink className={"navLink"} to={"./profile"}>
                             <div className={'avatar-container'}>
                                 <img alt={user} className={'avatar'} src={"/avatar/" + user}/>
-
                             </div>
                         </NavLink>
                     </li>

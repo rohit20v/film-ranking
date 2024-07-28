@@ -90,11 +90,17 @@ const UserFilms = () => {
                             <button type={"submit"}>Add friend</button>
                         </Form>
                     )}
-                    <span style={{fontWeight: "bold", fontSize: 42}}>
-                        <span className={'friendName'}>
-                            {username}
+
+                    <div style={{display:"flex", flexDirection: "row"}}>
+                        <div className={'avatar-container'}>
+                            <img alt={username} className={'avatar'} src={"/avatar/" + username}/>
+                        </div>
+                        <span style={{marginLeft: "15px",fontWeight: "bold", fontSize: 42}}>
+                            <span className={'friendName'}>
+                                {username}
+                            </span>
                         </span>
-                    </span>
+                    </div>
                     {userMovies?.length > 0 ? (
 
                         <div className={'friendMovies'}>

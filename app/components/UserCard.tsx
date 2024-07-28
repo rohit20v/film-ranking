@@ -1,12 +1,14 @@
 import '../styles/deleteBtn.css'
-import {useFetcher} from "@remix-run/react";
+import {useActionData, useFetcher} from "@remix-run/react";
+import {action} from "~/routes/profile";
 
-const UserCard = ({src, username, userMovies}: { src: string, username: string, userMovies: number}) => {
+const UserCard = ({src, username, userMovies}: { src: string, username: string, userMovies: number }) => {
+    const data = useActionData<typeof action>()
+    const err = data?.err;
     const fetcher = useFetcher()
     const deleteAccount = () => {
         const formData = new FormData();
         formData.append('formType', 'deleteAccount');
-        formData.append('username', username)
         fetcher.submit(formData, {method: "POST", action: "/profile"});
     };
     return (
