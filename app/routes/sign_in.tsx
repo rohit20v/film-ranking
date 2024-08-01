@@ -4,6 +4,26 @@ import {prisma} from "~/.server/db";
 import {Prisma} from "@prisma/client";
 import {encrypt} from "~/.server/auth";
 import {commitSession, getSession} from "~/session";
+import fs from "fs";
+
+const DEFAULT_AVATAR_PATH = "./public/default.jpg";
+const USER_AVATAR_DIR = "./public/uavatar";
+
+const setDefaultAvatar = (username: string) => {
+    try {
+        if (!fs.existsSync(USER_AVATAR_DIR)) {
+            fs.mkdirSync(USER_AVATAR_DIR, { recursive: true }); // recursive: true ensure that the directory is created
+        }
+
+        const userAvatarPath = `${USER_AVATAR_DIR}/${username}.jpg`;
+        fs.copyFileSync(DEFAULT_AVATAR_PATH, userAvatarPath);
+
+        console.log(`Default avatar set for user: ${username}`);
+    } catch (error) {
+        console.error("Error setting default avatar:", error);
+    }
+};
+
 
 export const action = async ({request}: ActionFunctionArgs) => {
     const formData = await request.formData();
@@ -24,8 +44,10 @@ export const action = async ({request}: ActionFunctionArgs) => {
         });
         console.log("USER CREATED", createdUser.username);
 
+        setDefaultAvatar(username_lower)
         const session = await getSession();
         session.set("user", username_lower);
+
 
         return redirect("/", {
             headers: {
