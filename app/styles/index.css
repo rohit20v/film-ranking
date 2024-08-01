@@ -213,8 +213,6 @@ footer {
 .friendName{
     box-shadow: inset 0 0 0 0 var(--theme-color-blue);
     color: var(--theme-color-blue);
-    padding: 0 .25rem;
-    margin: 42px -.25rem;
     transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
 }
 .friendName:hover {

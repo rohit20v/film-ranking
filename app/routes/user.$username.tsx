@@ -91,11 +91,11 @@ const UserFilms = () => {
                         </Form>
                     )}
 
-                    <div style={{display:"flex", flexDirection: "row"}}>
+                    <div style={{display:"flex", flexDirection: "row", alignItems: "center"}}>
                         <div className={'avatar-container'}>
                             <img alt={username} className={'avatar'} src={"/avatar/" + username}/>
                         </div>
-                        <span style={{marginLeft: "15px",fontWeight: "bold", fontSize: 42}}>
+                        <span style={{marginLeft: "16px",marginBottom: "8px", fontWeight: "bold", fontSize: 42}}>
                             <span className={'friendName'}>
                                 {username}
                             </span>
