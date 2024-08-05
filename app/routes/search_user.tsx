@@ -70,19 +70,24 @@ const Search_user = () => {
                 {friends?.map((x) => (
                     <li key={x?.friend?.username}>
                         <div style={{display: "flex", gap: 16, alignItems: "center"}}>
-                            <span style={{marginBottom: 8}}>☼</span>
+                            <span>☼</span>
                             <div className={'friendList'}>
                                 <div style={{display: "flex", gap: 16, alignItems: "center", justifyContent: "center"}}>
-                                    <img style={{borderRadius: "50%"}} width={50} src={`/avatar/${x.friend.username}`}
-                                         alt=""/>
-                                    <Link style={{textDecoration: "none"}}
-                                          to={"/user/" + x?.friend.username}>{x?.friend?.username}</Link>
+                                    <Link style={{textDecoration: "none", display: "flex", alignItems: "center"}}
+                                          to={"/user/" + x?.friend.username}>
+                                        <div className={'avatar-container'}>
+                                            <img className={'avatar'}
+                                                 src={`/avatar/${x.friend.username}`}
+                                                 alt=""/>
+                                        </div>
+                                        <span style={{marginLeft: 16}}>{x?.friend?.username}</span>
+                                    </Link>
                                 </div>
-                                <MdPersonRemove cursor={"pointer"}
-                                                onClick={() => removeFriend(String(x?.friend_id), String(x?.user_id))}
-                                                size={32}
-                                                color={'#da0000'}/>
                             </div>
+                            <MdPersonRemove cursor={"pointer"}
+                                            onClick={() => removeFriend(String(x?.friend_id), String(x?.user_id))}
+                                            size={32}
+                                            color={'#da0000'}/>
                         </div>
                     </li>
                 ))}

@@ -413,17 +413,14 @@ footer {
     .homeContainer{
         gap: 8px
     }
-    .avatar{
-        display: none
-    }
     .friendList{
         width: 100%;
         align-items: flex-start;
         flex-wrap: wrap;
     }
     .avatar-container {
-        width: 80px;
-        height: 80px;
+        width: 42px;
+        height: 42px;
     }
 
     .pfp {
