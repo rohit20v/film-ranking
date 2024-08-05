@@ -25,12 +25,20 @@ To set up the project locally, follow these steps:
     npm install
     ```
 
-3. **Setup the Database**:
+3. **Setup .env file**:
+add ".env" file to the root directory of the project 
+   ```env
+   DATABASE_URL=file:dev.db
+   OMDB_KEY=<your omdb api key for https://www.omdbapi.com/>
+   SECRET_KEY=<custom key>
+    ```
+
+5. **Setup the Database**:
     ```bash
     npx prisma migrate dev --name init
     ```
 
-4. **Start the Application**:
+6. **Start the Application**:
     ```bash
     npm run dev
     ```
