@@ -2,6 +2,7 @@ import {NavLink} from "@remix-run/react";
 import ThemeToggler from "~/components/ThemeToggler";
 import {useRef, useState} from "react";
 import {RxHamburgerMenu} from "react-icons/rx";
+import ProfileSelect from "~/components/ProfileSelect";
 
 function Navbar({user}: { user?: string }) {
     const menu = useRef()
@@ -48,11 +49,12 @@ function Navbar({user}: { user?: string }) {
                         </li>
                     </> :
                     <li>
-                        <NavLink className={"navLink"} to={"./profile"}>
-                            <div className={'avatar-container'}>
-                                <img alt={user} className={'avatar'} src={"/avatar/" + user}/>
-                            </div>
-                        </NavLink>
+                        {/*<NavLink className={"navLink"} to={"./profile"}>*/}
+                            {/*<div className={'avatar-container'}>*/}
+                            {/*    <img alt={user} className={'avatar'} src={"/avatar/" + user}/>*/}
+                            {/*</div>*/}
+                            <ProfileSelect pfp={"/avatar/" + user}/>
+                        {/*</NavLink>*/}
                     </li>
                 }
                 <li>
