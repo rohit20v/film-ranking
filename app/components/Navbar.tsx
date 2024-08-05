@@ -2,10 +2,10 @@ import {NavLink} from "@remix-run/react";
 import ThemeToggler from "~/components/ThemeToggler";
 import {useRef, useState} from "react";
 import {RxHamburgerMenu} from "react-icons/rx";
-import ProfileSelect from "~/components/ProfileSelect";
+import ProfileSelect, {logout} from "~/components/ProfileSelect";
 
 function Navbar({user}: { user?: string }) {
-    const menu = useRef()
+    const menu = useRef<HTMLElement>()
     const [isMenuToggled, setIsMenuToggled] = useState(false);
     const [nav, setNav] = useState(false);
     const toggleMenu = () => {
@@ -49,12 +49,7 @@ function Navbar({user}: { user?: string }) {
                         </li>
                     </> :
                     <li>
-                        {/*<NavLink className={"navLink"} to={"./profile"}>*/}
-                            {/*<div className={'avatar-container'}>*/}
-                            {/*    <img alt={user} className={'avatar'} src={"/avatar/" + user}/>*/}
-                            {/*</div>*/}
-                            <ProfileSelect pfp={"/avatar/" + user}/>
-                        {/*</NavLink>*/}
+                        <ProfileSelect pfp={"/avatar/" + user}/>
                     </li>
                 }
                 <li>
@@ -86,9 +81,14 @@ function Navbar({user}: { user?: string }) {
                                 </li>
                             </>
                             :
-                            <li>
-                                <NavLink className={"navLink"} to={"./profile"}>Profile</NavLink>
-                            </li>
+                            <>
+                                <li>
+                                    <NavLink className={"navLink"} to={"./profile"}>Profile</NavLink>
+                                </li>
+                                <li onClick={logout}>
+                                    <NavLink className={"navLink"} to={"./"}>Logout</NavLink>
+                                </li>
+                            </>
                         }
                     </ul>)}
                 </span>
