@@ -348,7 +348,7 @@ footer {
 }
 
 .movieCard {
-    max-width: 50%;
+    max-width: 40%;
     text-align: center;
 }
 
@@ -373,7 +373,7 @@ footer {
 }
 
 .poster:hover {
-    scale: 1.2;
+    scale: 1.1;
     box-shadow: 0 0 42px 6px black;
 }
 
