@@ -1,5 +1,6 @@
 import {LoaderFunctionArgs} from "@remix-run/node"
 import fs from "fs";
+import {checkLogin} from "~/.server/auth";
 
 const isGif = async (username: string): Promise<boolean> => {
     let error = new Promise<boolean>((resolve, reject) => {
@@ -11,6 +12,8 @@ const isGif = async (username: string): Promise<boolean> => {
 }
 
 export async function loader({request, params}: LoaderFunctionArgs) {
+    const checkAuth = await checkLogin(request);
+
     const userParam = params.user ?? ""
     if (await isGif(userParam)) {
         const url = new URL(request.url);
