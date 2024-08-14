@@ -76,7 +76,7 @@ function Films() {
         <div>
             <AddFilm/>
             <div className="grid">
-                <div id={"watched"} style={{display: "flex", flexDirection: "column", }}>
+                <div id={"watched"} style={{display: "flex", flexDirection: "column",}}>
                     <h3>
                         <span>
                             Watched Movies: {watchedMovies.length + " "}
@@ -85,8 +85,8 @@ function Films() {
                             </a>
                         </span>
                     </h3>
+                    <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 69}}>
 
-                    <div style={{display: "flex",flexWrap: "wrap", justifyContent: "center", gap: 69}}>
                         {watchedMovies.length > 0 ? (
                             watchedMovies.reverse().map((movie) => (
                                     <article className={"movieCard"} title={movie.title} key={movie.id}>
@@ -99,14 +99,16 @@ function Films() {
                                 )
                             )
                         ) : (
-                            <span>No movie found</span>
+                            <div style={{width: "100%"}}>
+                                <span>No movie found</span>
+                            </div>
                         )}
                     </div>
                 </div>
                 <div id={"not-watched"} className={"not-watched"}>
                     <h3>
                         <span>
-                            Not-watched Movies: { not_watchedMovies.length + " "}
+                            Not-watched Movies: {not_watchedMovies.length + " "}
                             <a className={"goTo"} href="#watched">
                                 Go to watched movies
                             </a>

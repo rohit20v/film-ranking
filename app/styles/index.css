@@ -361,10 +361,33 @@ footer {
 }
 
 .poster {
-    width: 50%;
+    width: 69%;
+    height: 200px;
     background: gray;
-    transition: .2s ease;
+    object-fit: cover;
+    transition: .2s ease-in-out;
     border-radius: 3px;
+    cursor: pointer;
+
+}
+
+.poster.liked {
+    border: 2px solid red;
+    transform: scale(1.05); 
+}
+
+.like-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: red;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 .themeToggler {
@@ -372,10 +395,6 @@ footer {
     margin-inline: 16px;
 }
 
-.poster:hover {
-    scale: 1.1;
-    box-shadow: 0 0 42px 6px black;
-}
 
 @keyframes slideIn {
     from {
