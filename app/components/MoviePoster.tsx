@@ -1,16 +1,17 @@
 import {FetcherWithComponents, useFetcher} from "@remix-run/react";
 import {useEffect, useState} from "react";
 
-const MoviePoster = ({tconst, name, isLikable = false, username, userId}:
+const MoviePoster = ({tconst, name, isLikable = false, username, userId, likedMovies = []}:
                          {
                              tconst: string,
                              name: string,
                              isLikable?: boolean,
                              username?: string,
                              userId?: number,
+                             likedMovies?: string[]
                          }) => {
     const poster: FetcherWithComponents<{ posterUrl: string }> = useFetcher();
-    const [isLiked, setIsLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(likedMovies.includes(tconst));
     const fetcher = useFetcher();
 
     useEffect(() => {

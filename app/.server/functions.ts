@@ -1,5 +1,6 @@
 import process from "process";
 import {prisma} from "~/.server/db";
+import * as console from "node:console";
 
 export const getMovieTitle = async (tconst: string): Promise<string> => {
     const res = await fetch("https://movies.lucailari.it/tconst/" + tconst);
@@ -41,6 +42,33 @@ export const getUserMovies = async (user: string): Promise<user_movies[]> => {
         return []
     }
 }
+
+export const getUserLikedMovies =  async (username: string) => {
+    try {
+        const likedMovies = await prisma.user.findFirst({
+            where:{
+                username
+            },
+            select:{
+                Like: {
+                    select:{
+                        movie:{
+                            select:{
+                                tconst: true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        return likedMovies?.Like.map((like) => like.movie.tconst) || [];
+
+    }catch (err){
+        console.log("Error fetching data from DB");
+        return []
+    }
+}
+
 export const searchMovie = async (search: string): Promise<searchedMovie[]> => {
     if (!search || search === "") {
         return []

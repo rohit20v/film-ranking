@@ -4,6 +4,7 @@ import {prisma} from "~/.server/db";
 import {OnlyStar} from "~/components/Star";
 import MoviePoster from "~/components/MoviePoster";
 import {checkLogin} from "~/.server/auth";
+import {getUserLikedMovies} from "~/.server/functions";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const sessionUser = await checkLogin(request)
@@ -14,6 +15,8 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
         },
         select: {id: true}
     });
+
+    const likedMovies = await getUserLikedMovies(sessionUser)
 
     let showAddFriendButton = true;
     const userSearched = params.username;
@@ -44,6 +47,7 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
     if (userMovies === null) {
         return json({
             err: "User not found",
+            likedMovies: null,
             userId: null,
             username: null,
             userMovies: null,
@@ -51,7 +55,7 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
         });
     }
 
-    return json({err: null, userId: getLoggedUserId, username: userSearched, userMovies, showAddFriendButton});
+    return json({err: null, likedMovies, userId: getLoggedUserId, username: userSearched, userMovies, showAddFriendButton});
 };
 
 export const action = async ({request, params}: ActionFunctionArgs) => {
@@ -129,7 +133,7 @@ const UserFilms = () => {
     const username = data?.username ?? "";
     const userMovies = data?.userMovies?.user_movies || [];
     const showAddFriendButton = data?.showAddFriendButton || false;
-
+    const likedMovies = data?.likedMovies ?? []
 
     return (
         <>
@@ -164,7 +168,7 @@ const UserFilms = () => {
                                     </header>
                                     <div>
                                         <MoviePoster isLikable={true} name={movie.title} tconst={movie.tconst}
-                                                     username={username} userId={Number(loggedUserId)}/>
+                                                     username={username} userId={Number(loggedUserId)} likedMovies={likedMovies}/>
                                     </div>
                                     <footer>
                                         <OnlyStar star={parseInt(movie.rating)}/>
