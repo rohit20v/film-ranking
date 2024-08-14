@@ -1,14 +1,13 @@
 import {FetcherWithComponents, useFetcher} from "@remix-run/react";
 import {useEffect, useState} from "react";
 
-const MoviePoster = ({tconst, name, isLikable = false, username, userId, movieId}:
+const MoviePoster = ({tconst, name, isLikable = false, username, userId}:
                          {
                              tconst: string,
                              name: string,
                              isLikable?: boolean,
                              username?: string,
                              userId?: number,
-                             movieId?: number
                          }) => {
     const poster: FetcherWithComponents<{ posterUrl: string }> = useFetcher();
     const [isLiked, setIsLiked] = useState(false);
@@ -28,7 +27,7 @@ const MoviePoster = ({tconst, name, isLikable = false, username, userId, movieId
             const formData = new FormData();
             formData.append('action', toBeToggled ? 'like' : 'dislike');
             formData.append('userId', String(userId));
-            formData.append('movieId', String(movieId));
+            formData.append('tconst', String(tconst));
 
             fetcher.submit(formData, {
                 method: 'POST',

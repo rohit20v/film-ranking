@@ -60,27 +60,42 @@ export const action = async ({request, params}: ActionFunctionArgs) => {
     const formType = formData.get("action");
 
     const user_id = Number(formData.get("userId"));
-    const movie_id = Number(formData.get("movieId"));
+    const tconst = String(formData.get("tconst"));
 
-    if (formType === 'like'){
-        await prisma.like.upsert({
+    if (formType === 'like') {
+        const existingLike = await prisma.like.findFirst({
             where: {
-                user_id_movie_id:{
-                    user_id,
-                    movie_id
-                }
-            },
-            update: {},
-            create: {
-                user_id,
-                movie_id
+                user_id: user_id,
+                movie: {
+                    tconst: tconst,
+                },
             },
         });
-    }else if(formType === 'dislike'){
+
+        if (!existingLike) {
+            const movieRecord = await prisma.user_movie.findFirst({
+                where: {
+                    tconst,
+                },
+                select: { id: true },
+            });
+
+            if (movieRecord) {
+                await prisma.like.create({
+                    data: {
+                        user_id: user_id,
+                        movie_id: movieRecord.id,
+                    },
+                });
+            }
+        }
+    } else if (formType === 'dislike') {
         await prisma.like.deleteMany({
             where: {
                 user_id: user_id,
-                movie_id: movie_id
+                movie: {
+                    tconst: tconst,
+                },
             },
         });
     }
@@ -149,7 +164,7 @@ const UserFilms = () => {
                                     </header>
                                     <div>
                                         <MoviePoster isLikable={true} name={movie.title} tconst={movie.tconst}
-                                                     username={username} movieId={movie.id} userId={Number(loggedUserId)}/>
+                                                     username={username} userId={Number(loggedUserId)}/>
                                     </div>
                                     <footer>
                                         <OnlyStar star={parseInt(movie.rating)}/>
