@@ -348,7 +348,7 @@ footer {
 }
 
 .movieCard {
-    max-width: 40%;
+    max-width: 50%;
     text-align: center;
 }
 
@@ -357,7 +357,7 @@ footer {
 }
 
 #queue {
-    min-width: 100%;
+    min-width: 50%;
 }
 
 .poster {

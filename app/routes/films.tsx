@@ -114,6 +114,8 @@ function Films() {
                             </a>
                         </span>
                     </h3>
+                    <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 69}}>
+
                     {not_watchedMovies.length > 0 ? (
                         not_watchedMovies.reverse().map((movie) => (
                             <article
@@ -144,6 +146,7 @@ function Films() {
                     ) : (
                         <span>No movie found</span>
                     )}
+                    </div>
                 </div>
             </div>
         </div>
