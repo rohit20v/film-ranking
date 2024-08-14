@@ -8,6 +8,13 @@ import {checkLogin} from "~/.server/auth";
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const sessionUser = await checkLogin(request)
 
+    const getLoggedUserId = await prisma.user.findFirst({
+        where: {
+            username: sessionUser
+        },
+        select: {id: true}
+    });
+
     let showAddFriendButton = true;
     const userSearched = params.username;
     if (
@@ -37,17 +44,46 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
     if (userMovies === null) {
         return json({
             err: "User not found",
+            userId: null,
             username: null,
             userMovies: null,
             showAddFriendButton: null,
         });
     }
 
-    return json({err: null, username: userSearched, userMovies, showAddFriendButton});
+    return json({err: null, userId: getLoggedUserId, username: userSearched, userMovies, showAddFriendButton});
 };
 
 export const action = async ({request, params}: ActionFunctionArgs) => {
     const user = await checkLogin(request);
+    const formData = await request.formData()
+    const formType = formData.get("action");
+
+    const user_id = Number(formData.get("userId"));
+    const movie_id = Number(formData.get("movieId"));
+
+    if (formType === 'like'){
+        await prisma.like.upsert({
+            where: {
+                user_id_movie_id:{
+                    user_id,
+                    movie_id
+                }
+            },
+            update: {},
+            create: {
+                user_id,
+                movie_id
+            },
+        });
+    }else if(formType === 'dislike'){
+        await prisma.like.deleteMany({
+            where: {
+                user_id: user_id,
+                movie_id: movie_id
+            },
+        });
+    }
 
     const friendToAdd = params.username;
     const friendToAddId = await prisma.user.findFirst({
@@ -74,10 +110,11 @@ export const action = async ({request, params}: ActionFunctionArgs) => {
 
 const UserFilms = () => {
     const data = useLoaderData<typeof loader>();
-
+    const loggedUserId = data?.userId?.id as number;
     const username = data?.username ?? "";
     const userMovies = data?.userMovies?.user_movies || [];
     const showAddFriendButton = data?.showAddFriendButton || false;
+
 
     return (
         <>
@@ -91,11 +128,11 @@ const UserFilms = () => {
                         </Form>
                     )}
 
-                    <div style={{display:"flex", flexDirection: "row", alignItems: "center"}}>
+                    <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                         <div className={'avatar-container'}>
                             <img alt={username} className={'avatar'} src={"/avatar/" + username}/>
                         </div>
-                        <span style={{marginLeft: "16px",marginBottom: "8px", fontWeight: "bold", fontSize: 42}}>
+                        <span style={{marginLeft: "16px", marginBottom: "8px", fontWeight: "bold", fontSize: 42}}>
                             <span className={'friendName'}>
                                 {username}
                             </span>
@@ -111,7 +148,8 @@ const UserFilms = () => {
                                         <strong className="movieName">{movie.title}</strong>
                                     </header>
                                     <div>
-                                        <MoviePoster name={movie.title} tconst={movie.tconst}/>
+                                        <MoviePoster isLikable={true} name={movie.title} tconst={movie.tconst}
+                                                     username={username} movieId={movie.id} userId={Number(loggedUserId)}/>
                                     </div>
                                     <footer>
                                         <OnlyStar star={parseInt(movie.rating)}/>
