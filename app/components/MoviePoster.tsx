@@ -1,5 +1,5 @@
 import {FetcherWithComponents, useFetcher} from "@remix-run/react";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
 const MoviePoster = ({tconst, name, isLikable = false, username, userId, likedMovies = []}:
                          {
