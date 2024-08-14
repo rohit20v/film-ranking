@@ -1,39 +1,52 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User_movie {
-    id         Int      @id @default(autoincrement())
-    user       User     @relation(fields: [user_id], references: [id])
-    user_id    Int
-    tconst     String
-    title      String
-    rating     Decimal
-    created_at DateTime
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+  tconst     String
+  title      String
+  rating     Decimal
+  created_at DateTime
+  Like       Like[]
 
-    @@unique([tconst, user_id])
+  @@unique([tconst, user_id])
 }
 
 model User {
-    id          Int            @id @default(autoincrement())
-    username    String         @unique
-    password    String
-    user_movies User_movie[]
-    following   User_friends[] @relation("user_id") // Friends added by the user
-    followers   User_friends[] @relation("friend_id") // Users that added as friend this user
+  id          Int            @id @default(autoincrement())
+  username    String         @unique
+  password    String
+  user_movies User_movie[]
+  following   User_friends[] @relation("user_id") // Friends added by the user
+  followers   User_friends[] @relation("friend_id") // Users that added as friend this user
+  Like        Like[]
 }
 
 model User_friends {
-    id        Int  @id @default(autoincrement())
-    user      User @relation(name: "user_id", fields: [user_id], references: [id])
-    user_id   Int
-    friend    User @relation(name: "friend_id", fields: [friend_id], references: [id])
-    friend_id Int
+  id        Int  @id @default(autoincrement())
+  user      User @relation(name: "user_id", fields: [user_id], references: [id])
+  user_id   Int
+  friend    User @relation(name: "friend_id", fields: [friend_id], references: [id])
+  friend_id Int
 
-    @@unique([user_id, friend_id])
+  @@unique([user_id, friend_id])
+}
+
+model Like {
+  id         Int        @id @default(autoincrement())
+  user       User       @relation(fields: [user_id], references: [id])
+  user_id    Int
+  movie      User_movie @relation(fields: [movie_id], references: [id])
+  movie_id   Int
+  created_at DateTime   @default(now())
+
+  @@unique([user_id, movie_id])
 }
