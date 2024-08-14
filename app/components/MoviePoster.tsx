@@ -11,7 +11,7 @@ const MoviePoster = ({tconst, name, isLikable = false, username, userId, likedMo
                              likedMovies?: string[]
                          }) => {
     const poster: FetcherWithComponents<{ posterUrl: string }> = useFetcher();
-    const [isLiked, setIsLiked] = useState(likedMovies.includes(tconst));
+    const isLiked = likedMovies.includes(tconst);
     const fetcher = useFetcher();
 
     useEffect(() => {
@@ -23,10 +23,9 @@ const MoviePoster = ({tconst, name, isLikable = false, username, userId, likedMo
 
     const handleLikes = () => {
         if (isLikable) {
-            const toBeToggled = !isLiked;
-            setIsLiked(!isLiked);
+            const actionType = isLiked ? 'dislike' : 'like';
             const formData = new FormData();
-            formData.append('action', toBeToggled ? 'like' : 'dislike');
+            formData.append('action', actionType);
             formData.append('userId', String(userId));
             formData.append('tconst', String(tconst));
 
