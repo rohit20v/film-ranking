@@ -100,7 +100,10 @@ footer {
     border-bottom-left-radius: 32px;
     border-bottom-right-radius: 32px;
     margin-inline: 42px;
-    background: var(--background);
+    /*background: var(--background);*/
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
     color: var(--color);
     padding: 8px;
     border-bottom: solid #007acc;
