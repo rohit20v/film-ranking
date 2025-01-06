@@ -53,7 +53,8 @@ function AddFilm() {
                     <div aria-busy="true"/>
                 )}
                 {search.data?.searchedMovies?.length === 0 && (
-                    <div className="suggestedMovies">No movies found.</div>
+                    // <div className="suggestedMovies">No movies found.</div>
+                    <div className="suggestedMovies" style={{color: "red", fontWeight: "bold"}}>Search bar is temporarily disabled!</div>
                 )}
             </search.Form>
             <ul className={'movie-list'}>
